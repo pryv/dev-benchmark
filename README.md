@@ -48,6 +48,10 @@ In `benchmark/`, you will find a few scripts used to benchmark a Pryv core servi
 
 Queries events from 100k to 500k
 
+### `progressive-gets.sh`
+
+Events.get requests by sizes of 10, 100, 1k, 10k, 100k
+
 ### `pryv-me-like.sh`
 
 Access logs from 19/08/2016
