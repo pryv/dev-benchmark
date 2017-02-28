@@ -1,0 +1,31 @@
+{
+  "name": "pryv-service-core-benchmark",
+  "version": "1.0.0",
+  "description": "benchmarking Pryv service-core",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kebetsi/pryv-service-core-benchmark.git"
+  },
+  "keywords": [
+    "benchmark",
+    "pryv",
+    "core"
+  ],
+  "author": "Ilia Kebets",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kebetsi/pryv-service-core-benchmark/issues"
+  },
+  "homepage": "https://github.com/kebetsi/pryv-service-core-benchmark#readme",
+  "dependencies": {
+    "async": "^2.1.5",
+    "lodash": "^4.17.4",
+    "pryv": "^1.0.0",
+    "pyUtils": "git+ssh://git@github.com:kebetsi/pryv-js-utils.git",
+    "superagent": "^3.5.0"
+  }
+}
