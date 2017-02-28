@@ -27,13 +27,13 @@ Here you will find links to database dumps available for benchmarking
 
 #### 1M dump
 
-A dump containing 1M numerical events, downloadable [here](https://drive.google.com/open?id=0B6hiVSUep65USi16cnRSZTQ2bFU)
-**Username** benchmark
-**db userID** ciwrtttr70001b5g4jsrae21b
-**password** 1l0v3p0t1r0nZ
-**password hash** $2a$10$ehVgDzGOXrui271ZMLv2gu5bgz3QdsEQXHdx0FRug2BJNaqLLhwIK
-**App token**: cizk09ayw0004p7ot4xv0sl3n
-**personal token** generate if needed (cizk08abd0002p7otzv9r4f1l)
+A dump containing 1M numerical events, downloadable [here](https://drive.google.com/open?id=0B6hiVSUep65USi16cnRSZTQ2bFU)  
+**Username** benchmark 
+**db userID** ciwrtttr70001b5g4jsrae21b  
+**password** 1l0v3p0t1r0nZ  
+**password hash** $2a$10$ehVgDzGOXrui271ZMLv2gu5bgz3QdsEQXHdx0FRug2BJNaqLLhwIK  
+**App token**: cizk09ayw0004p7ot4xv0sl3n  
+**personal token** generate if needed (cizk08abd0002p7otzv9r4f1l)  
 
 ### Generators
 
@@ -67,26 +67,26 @@ Multiple light requests.  The requests ones should be managed in parallel.
 
 ## Useful commands
 
-*CREATE USER**
+### CREATE USER
 
 `curl -i -X POST -H 'Content-Type: application/json' -H 'authorization: OVERRIDE ME' -d '{"username": "benchmark","passwordHash": "$2a$10$ehVgDzGOXrui271ZMLv2gu5bgz3QdsEQXHdx0FRug2BJNaqLLhwIK", "email": "benchmark@benchmark.com","language": "fr"}' "http://127.0.0.1:3000/system/create-user/"`
 
-**LOGIN (generate personal token)**
+### LOGIN (generate personal token)
 
 `curl -i -H "Content-Type: application/json" -H "Origin: https://sw.rec.la" -X POST -d '{"username":"benchmark","password":"1l0v3p0t1r0nZ","appId":"pryv-benchmark"}' "http://127.0.0.1:3000/benchmark/auth/login"`
 
-**CREATE APP TOKEN**
+### CREATE APP TOKEN
 
 `curl -i -X POST -H 'Content-Type: application/json' -d '{"name":"for benchmarking","permissions":[{"streamId":"*","level":"manage"}]}' "http://127.0.0.1:3000/benchmark/accesses?auth=cizk08abd0002p7otzv9r4f1l"`
 
-**CREATE STREAM**
+### CREATE STREAM
 
 `curl -i -X POST -H 'Content-Type: application/json' -d '{"id":"rootStream","name":"Root Stream"}' "http://127.0.0.1:3000/benchmark/streams?auth=cizk09ayw0004p7ot4xv0sl3n"`
 
-**CREATE EVENT**
+### CREATE EVENT
 
 `curl -i -X POST -H 'Content-Type: application/json' -d '{"streamId":"supportStream","type":"mass/kg","content":90}' "http://127.0.0.1:3000/benchmark/events/?auth=cizk09ayw0004p7ot4xv0sl3n"`
 
-**GET EVENTS**
+### GET EVENTS
 
 `curl -i "http://127.0.0.1:3000/benchmark/events/?auth=cizk09ayw0004p7ot4xv0sl3n"`
