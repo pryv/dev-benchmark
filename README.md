@@ -40,13 +40,13 @@ A dump containing 1M numerical events, downloadable [here](https://drive.google.
 You will find a few NodeJS scripts for generating data in `src/generateEvents.js`
 
 
-## Querying scenarii
+## Querying scripts
 
 In `benchmark/`, you will find a few scripts used to benchmark a Pryv core service running locally
 
 ### `single-heavy-requests.sh`
 
-Queries events from 100k to 500k
+Events.get requests from 100k to 500k
 
 ### `progressive-gets.sh`
 
@@ -58,15 +58,15 @@ Access logs from 19/08/2016
 
 ### `single-heavy-multiple-light.sh`
 
-One heavy request in parallel with multiple light ones. The light ones should not be blocked
+One heavy Events.get request in parallel with multiple light ones. The light ones should not be blocked.
 
 ### `multiple-heavy.sh`
 
-Multiple heavy requests. The requests ones should be managed in parallel.
+Multiple heavy Events.get requests. The requests should be handled in parallel.
 
 ### `multiple-light.sh`
 
-Multiple light requests.  The requests ones should be managed in parallel.
+Multiple light Events.get requests. The requests should be handled in parallel.
 
 
 ## Useful commands
