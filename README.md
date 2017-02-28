@@ -1,6 +1,6 @@
 # Benchmarking tools for Pryv.io
 
-Client and database components to benchmark Pryv.io.
+Client and database components to benchmark Pryv.io.  
 Start a database and a certain version of core, run the tests, save the times, then do the same with another version.
 
 
@@ -27,8 +27,8 @@ Here you will find links to database dumps available for benchmarking
 
 #### 1M dump
 
-A dump containing 1M numerical events, downloadable [here](https://drive.google.com/open?id=0B6hiVSUep65USi16cnRSZTQ2bFU)  
-**Username** benchmark 
+A dump containing 1M numerical events, downloadable [here](https://drive.google.com/open?id=0B6hiVSUep65USi16cnRSZTQ2bFU).  
+**Username** benchmark  
 **db userID** ciwrtttr70001b5g4jsrae21b  
 **password** 1l0v3p0t1r0nZ  
 **password hash** $2a$10$ehVgDzGOXrui271ZMLv2gu5bgz3QdsEQXHdx0FRug2BJNaqLLhwIK  
