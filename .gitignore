@@ -39,3 +39,4 @@ jspm_packages
 dump/
 db-data/
 .DS_Store
+big-dump/

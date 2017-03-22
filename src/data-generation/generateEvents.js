@@ -5,10 +5,11 @@ var async = require('async'),
 
 
 var baseUrl = 'http://127.0.0.1:3000/' + creds.username + '/';
+    //baseUrl = 'https://testuser.pryv.li'  'ciypvpa530000kb57acjwwp04'
 
 batch = [];
 
-for(var i=0; i<1000; i++) {
+for(var i=0; i<3000; i++) {
   batch.push(
   {
     method: 'events.create',
@@ -22,7 +23,7 @@ for(var i=0; i<1000; i++) {
 
 var start = Date.now();
 
-async.timesLimit(959, 10, function (n, cb) {
+async.timesLimit(1000, 3, function (n, cb) {
   request.post(baseUrl + '?auth=' + creds.token)
     .send(batch)
     .set('Content-Type', 'application/json')
