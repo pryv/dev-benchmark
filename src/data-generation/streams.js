@@ -7,7 +7,7 @@ const stream = {
   name: 'Heart'
 };
 
-const users = require('../data/users-medium-instance.json');
+const users = require('../../json-data/users.json');
 let connections = [];
 
 for (let i=0; i<100; i++) {
