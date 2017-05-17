@@ -1,11 +1,12 @@
 const async = require('async');
 const pryv = require('pryv');
 const _ = require('lodash');
+const fs = require('fs');
 
 const params = {
   emfitBatchSize: 100,
-  emfitUsers: 5,
-  emfitConcurrent: 5,
+  emfitUsers: 10,
+  emfitConcurrent: 6,
   domoSize: 3,
   domoConcurrent: 20,
   ecgSize: 2,
@@ -53,6 +54,7 @@ async.eachOfLimit(connections, params.emfitConcurrent, (conn, key, done) => {
 
   console.log('results');
   console.log(results);
+  fs.writeFileSync(__dirname + '/../../results/domo-safety/' + results.startTime + '.json', JSON.stringify(results));
 });
 
 
