@@ -27,7 +27,7 @@ function runECGcreations(params, users) {
     streamId: 'valid-stream-id',
     description: 'This is a description.'
   };
-  const file = createImagePayload(__dirname + '/../data/1mb-file.dat');
+  const file = createImagePayload(__dirname + '/../../bin-data/1mb-file.dat');
 
   connections['testuser2-0'].events.createWithAttachment(event, file, (err, event) => {
 
