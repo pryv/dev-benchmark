@@ -19,7 +19,7 @@ let outputFileName = __dirname + '/../../results/domo-safety/batch-'
   + params.emfitBatchSize + '-users-' + params.emfitUsers
   + '-concurrency-' + params.emfitConcurrent + '-';
 
-const users = require('../data/users-medium-instance.json');
+const users = require('../../json-data/users.json');
 
 runEmfitBatches(params, users);
 
