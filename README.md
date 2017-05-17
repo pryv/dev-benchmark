@@ -17,7 +17,18 @@ You will find a few NodeJS scripts for generating data in `src/data-generation/`
 
 ### users
 
-`src/data-generation/users.js` creates users on `pryv.li` using the following schema:
+`node src/data-generation/users.js [options]` creates users and stores their username/password into `json-data/users.json`
+
+#### options
+
+- `--domain=SS` defines the domain on which the users will be created, defaults to `pryv.li`
+- `--hosting=SS` defines the hosting on which the users will be created (see register config), defaults to `exoscale.ch-ch2`
+- `--num=NN` defines the number of users to create, defaults to 100
+- `--prefix=SS` defines the prefix to the username/password pair, defaults to `testuser-`
+
+#### users.json
+
+`json-data/users.json` will contain an array of username/password in the following format:
 ```javascript
 {
   "username": "testuserN",
