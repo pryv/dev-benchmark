@@ -24,6 +24,7 @@
   "dependencies": {
     "async": "^2.1.5",
     "lodash": "^4.17.4",
+    "minimist": "^1.2.0",
     "pryv": "^1.0.0",
     "pyUtils": "git+ssh://git@github.com:kebetsi/pryv-js-utils.git",
     "superagent": "^3.5.0"
