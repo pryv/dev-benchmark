@@ -1,0 +1,67 @@
+{
+  "params": {
+    "emfitBatchSize": 100,
+    "emfitUsers": 10,
+    "emfitConcurrent": 6,
+    "domoSize": 3,
+    "domoConcurrent": 20,
+    "ecgSize": 2,
+    "ecgConcurrent": 20
+  },
+  "startTime": "Wed May 17 2017 13:47:34 GMT+0200 (CEST)",
+  "startTimeMs": 1495021654564,
+  "emfitBatches": {
+    "testuser2-0": {
+      "startMs": 1495021654565,
+      "endMs": 1495021655618,
+      "diffMs": 1053
+    },
+    "testuser2-1": {
+      "startMs": 1495021654592,
+      "endMs": 1495021655630,
+      "diffMs": 1038
+    },
+    "testuser2-2": {
+      "startMs": 1495021654595,
+      "endMs": 1495021655636,
+      "diffMs": 1041
+    },
+    "testuser2-3": {
+      "startMs": 1495021654596,
+      "endMs": 1495021655621,
+      "diffMs": 1025
+    },
+    "testuser2-4": {
+      "startMs": 1495021654597,
+      "endMs": 1495021655632,
+      "diffMs": 1035
+    },
+    "testuser2-5": {
+      "startMs": 1495021654598,
+      "endMs": 1495021655625,
+      "diffMs": 1027
+    },
+    "testuser2-6": {
+      "startMs": 1495021655618,
+      "endMs": 1495021656492,
+      "diffMs": 874
+    },
+    "testuser2-7": {
+      "startMs": 1495021655621,
+      "endMs": 1495021656495,
+      "diffMs": 874
+    },
+    "testuser2-8": {
+      "startMs": 1495021655625,
+      "endMs": 1495021656493,
+      "diffMs": 868
+    },
+    "testuser2-9": {
+      "startMs": 1495021655630,
+      "endMs": 1495021656494,
+      "diffMs": 864
+    }
+  },
+  "endTimeMs": 1495021656495,
+  "diffTimeMs": 1931
+}

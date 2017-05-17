@@ -1,0 +1,64 @@
+{
+  "params": {
+    "emfitBatchSize": 2000,
+    "emfitUsers": 10,
+    "emfitConcurrent": 5
+  },
+  "startTime": "Wed May 17 2017 17:13:04 GMT+0200 (CEST)",
+  "startTimeMs": 1495033984443,
+  "emfitBatches": {
+    "testuser2-0": {
+      "startMs": 1495033984443,
+      "endMs": 1495034003410,
+      "diffMs": 18967
+    },
+    "testuser2-1": {
+      "startMs": 1495033984463,
+      "endMs": 1495034003563,
+      "diffMs": 19100
+    },
+    "testuser2-2": {
+      "startMs": 1495033984468,
+      "endMs": 1495034003754,
+      "diffMs": 19286
+    },
+    "testuser2-3": {
+      "startMs": 1495033984470,
+      "endMs": 1495034003234,
+      "diffMs": 18764
+    },
+    "testuser2-4": {
+      "startMs": 1495033984474,
+      "endMs": 1495034003736,
+      "diffMs": 19262
+    },
+    "testuser2-5": {
+      "startMs": 1495034003234,
+      "endMs": 1495034021941,
+      "diffMs": 18707
+    },
+    "testuser2-6": {
+      "startMs": 1495034003410,
+      "endMs": 1495034022771,
+      "diffMs": 19361
+    },
+    "testuser2-7": {
+      "startMs": 1495034003563,
+      "endMs": 1495034022826,
+      "diffMs": 19263
+    },
+    "testuser2-8": {
+      "startMs": 1495034003736,
+      "endMs": 1495034022595,
+      "diffMs": 18859
+    },
+    "testuser2-9": {
+      "startMs": 1495034003754,
+      "endMs": 1495034022253,
+      "diffMs": 18499
+    }
+  },
+  "endTimeMs": 1495034022826,
+  "diffTimeMs": 38383,
+  "meanTimeMs": 19006.8
+}

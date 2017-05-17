@@ -1,0 +1,39 @@
+{
+  "params": {
+    "emfitBatchSize": 100,
+    "emfitUsers": 5,
+    "emfitConcurrent": 2
+  },
+  "startTime": "Wed May 17 2017 17:04:46 GMT+0200 (CEST)",
+  "startTimeMs": 1495033486428,
+  "emfitBatches": {
+    "testuser2-0": {
+      "startMs": 1495033486428,
+      "endMs": 1495033486887,
+      "diffMs": 459
+    },
+    "testuser2-1": {
+      "startMs": 1495033486447,
+      "endMs": 1495033486899,
+      "diffMs": 452
+    },
+    "testuser2-2": {
+      "startMs": 1495033486887,
+      "endMs": 1495033487343,
+      "diffMs": 456
+    },
+    "testuser2-3": {
+      "startMs": 1495033486899,
+      "endMs": 1495033487338,
+      "diffMs": 439
+    },
+    "testuser2-4": {
+      "startMs": 1495033487338,
+      "endMs": 1495033487749,
+      "diffMs": 411
+    }
+  },
+  "endTimeMs": 1495033487749,
+  "diffTimeMs": 1321,
+  "meanTimeMs": 443.4
+}
