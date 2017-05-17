@@ -15,7 +15,7 @@ Start a database and a certain version of core, run the tests, save the times, t
 You will find a few NodeJS scripts for generating data in `src/data-generation/`
 
 
-### users
+### Users
 
 `node src/data-generation/users.js [options]` creates users and stores their username/password into `json-data/users.json`
 
@@ -25,8 +25,9 @@ You will find a few NodeJS scripts for generating data in `src/data-generation/`
 - `--hosting=SS` defines the hosting on which the users will be created (see register config), defaults to `exoscale.ch-ch2`
 - `--num=NN` defines the number of users to create, defaults to 100
 - `--prefix=SS` defines the prefix to the username/password pair, defaults to `testuser-`
+- `--output=SS` defines the location of the output file from the root, defaults to `json-data/users.json`
 
-#### users.json
+#### Output
 
 `json-data/users.json` will contain an array of username/password in the following format:
 ```javascript
@@ -37,20 +38,18 @@ You will find a few NodeJS scripts for generating data in `src/data-generation/`
 ```
 
 
-### tokens
+### Tokens
 
-`src/data-generation/tokens.js` reads users saved in `src/data/users.json` and obtains a personal token for each of them, writing the result in the same place.
+`node src/data-generation/tokens.js` reads users saved in `json-data/users.json` and obtains a personal token for each of them, writing the result in the same place.
+
+### Streams
+
+`node src/data-generation/streams.js` reads users saved in `json-data/users.json` and creates a stream for them.
 
 
 ### events
 
 TODO
-
-
-### streams
-
-TODO
-
 
 ## Apache Benchmark scripts
 
@@ -122,9 +121,9 @@ Starts local MongoDB process.
 Loads a running MongoDB with the contents of the dump provided as parameters (erasing existing entries).
   
   
-#### users
+#### Users
 
-`src/data/users-micro-instance.json` & `src/data/users-medium-instance.json` hold arrays of already created users on `pryv.li` with personal tokens. When needed, they can be regenerated using `src/data-generation/tokens.js`.  
+`json-data/pryvli-exoscale1.json` & `json-data/pryvli-exoscale2.json` hold arrays of already created users on `pryv.li` with personal tokens. When needed, they can be regenerated using `node src/data-generation/tokens.js`.  
 Each array item:  
 ```javascript
 {
