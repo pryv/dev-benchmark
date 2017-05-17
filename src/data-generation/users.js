@@ -3,7 +3,7 @@ const async = require('async');
 const _ = require('lodash');
 const fs = require('fs');
 
-const OUTPUT_USERS_FILE = __dirname + '/../../json-data/users.json';
+const DEFAULT_OUTPUT_USERS_FILE = __dirname + '/../../json-data/users.json';
 
 let argv = require('minimist')(process.argv.slice(2));
 
@@ -11,6 +11,7 @@ let domain = argv.domain;
 let hosting = argv.hosting;
 let prefix = argv.prefix;
 let numUsers = argv.num;
+let output = argv.output;
 
 console.log(argv);
 
@@ -25,6 +26,11 @@ if (! prefix) {
 }
 if (! numUsers) {
   numUsers = 100;
+}
+if (output) {
+  output = __dirname + '/../../' + output;
+} else {
+  output = DEFAULT_OUTPUT_USERS_FILE;
 }
 
 let userCreateBase = {
