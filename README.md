@@ -33,14 +33,47 @@ A dump containing 1M numerical events, downloadable [here](https://drive.google.
 **password** 1l0v3p0t1r0nZ  
 **password hash** $2a$10$ehVgDzGOXrui271ZMLv2gu5bgz3QdsEQXHdx0FRug2BJNaqLLhwIK  
 **App token**: cizk09ayw0004p7ot4xv0sl3n  
-**personal token** generate if needed (cizk08abd0002p7otzv9r4f1l)  
+**personal token** generate if needed (cizk08abd0002p7otzv9r4f1l)
+  
+#### users
+
+`src/data/users-micro-instance.json` & `src/data/users-medium-instance.json` hold arrays of already created users on `pryv.li` with personal tokens. When needed, they can be regenerated using `src/data-generation/tokens.js`.  
+Each array item:  
+```javascript
+{
+  "username": "testuser1",
+  "password": "testuser1",
+  "token": "cj2ruhpxn007y0w57j1whz8m7"
+}
+```
 
 ### Generators
 
 You will find a few NodeJS scripts for generating data in `src/generateEvents.js`
 
+### users
 
-## Querying scripts
+`src/data-generation/users.js` creates users on `pryv.li` using the following schema:
+```javascript
+{
+  "username": "testuserN",
+  "password": "testuserN"
+}
+```
+
+### tokens
+
+`src/data-generation/tokens.js` reads users saved in `src/data/users.json` and obtains a personal token for each of them, writing the result in the same place.
+
+### events
+
+TODO
+
+### streams
+
+TODO
+
+## Apache Benchmark scripts
 
 In `benchmark/`, you will find a few scripts used to benchmark a Pryv core service running locally
 
@@ -69,7 +102,7 @@ Multiple heavy Events.get requests. The requests should be handled in parallel.
 Multiple light Events.get requests. The requests should be handled in parallel.
 
 
-## Useful commands
+## Useful cURL commands
 
 ### CREATE USER
 

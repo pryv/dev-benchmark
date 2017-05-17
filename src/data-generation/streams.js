@@ -9,7 +9,7 @@ const stream = {
 
 
 
-const users = require('../data/users-small-instance.json');
+const users = require('../data/users-micro-instance.json');
 let connections = [];
 
 for (let i=0; i<100; i++) {
