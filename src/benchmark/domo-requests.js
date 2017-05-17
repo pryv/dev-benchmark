@@ -3,8 +3,9 @@ const pryv = require('pryv');
 const _ = require('lodash');
 
 const params = {
-  emfitSize: 3,
-  emfitConcurrent: 1,
+  emfitBatchSize: 100,
+  emfitUsers: 5,
+  emfitConcurrent: 5,
   domoSize: 3,
   domoConcurrent: 20,
   ecgSize: 2,
@@ -13,15 +14,49 @@ const params = {
 
 
 
-const users = require('../data/users-micro-instance.json');
+const users = require('../data/users-medium-instance.json');
 let connections = [];
 
-for (let i=0; i<params.emfitConcurrent; i++) {
+for (let i=0; i<params.emfitUsers; i++) {
   connections.push(new pryv.Connection(_.extend({domain: 'pryv.li'}, users[i])));
 }
 
-const numericBatch = createNumericBatch(params.emfitSize);
+const numericBatch = createNumericBatch(params.emfitBatchSize);
 
+let results = {};
+results.params = params;
+results.startTime = new Date((new Date().toUTCString()) + ' UTC').toString()
+results.startTimeMs = Date.now();
+results.emfitBatches = {};
+
+async.eachOfLimit(connections, params.emfitConcurrent, (conn, key, done) => {
+  results.emfitBatches[conn.username] = {};
+  results.emfitBatches[conn.username].startMs = Date.now();
+  console.log('user:', conn.username, 'batch create', results.emfitBatches[conn.username]);
+  conn.batchCall(numericBatch, function (err, batchRes) {
+    if (err) {
+      console.log('user:', conn.username, 'got error', err);
+      results.emfitBatches[conn.username].error = err;
+      return done();
+    }
+    console.log('user:', conn.username, 'got results, length:',batchRes.length);
+    results.emfitBatches[conn.username].endMs = Date.now();
+    results.emfitBatches[conn.username].diffMs = results.emfitBatches[conn.username].endMs - results.emfitBatches[conn.username].startMs;
+    done();
+  })
+}, (err) => {
+  if (err) {
+    console.log('got err in parallel call', err);
+  }
+  results.endTimeMs = Date.now();
+  results.diffTimeMs = results.endTimeMs - results.startTimeMs;
+
+  console.log('results');
+  console.log(results);
+});
+
+
+/*
 let eventsCreates = [];
 connections.forEach((c) => {
   eventsCreates.push(c.batchCall.bind(c, numericBatch, (err, results) => {
@@ -39,6 +74,7 @@ async.parallelLimit(eventsCreates, params.emfitConcurrent, (err, results) => {
   }
   console.log('results', results);
 });
+*/
 
 function createNumericBatch(size) {
   let batch = [];
@@ -47,7 +83,7 @@ function createNumericBatch(size) {
     batch.push({
       method: 'events.create',
       params: {
-        streamId: 'heart',
+        streamId: 'weight',
         type: 'mass/kg',
         content: i
       }
