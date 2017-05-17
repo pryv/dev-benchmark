@@ -3,10 +3,16 @@
 Client and database components to benchmark Pryv.io.  
 Start a database and a certain version of core, run the tests, save the times, then do the same with another version.
 
+## Benchmark scenarii
 
-### Generators
+### Domo-Safety
 
-You will find a few NodeJS scripts for generating data in `src/generateEvents.js`
+`src/benchmark/domo-requests.js` holds requests to simulate Domo-Safety's single core instance, as of May 2017: Medium instance on Exoscale.
+
+
+## Generators
+
+You will find a few NodeJS scripts for generating data in `src/data-generation/`
 
 
 ### users
