@@ -17,7 +17,7 @@ You will find a few NodeJS scripts for generating data in `src/data-generation/`
 
 ### users
 
-`node src/data-generation/users.js` creates users and stores their username/password into `json-data/users.json`
+`node src/data-generation/users.js [options]` creates users and stores their username/password into `json-data/users.json`
 
 #### options
 
