@@ -9,6 +9,10 @@ Start a database and a certain version of core, run the tests, save the times, t
 
 `src/benchmark/domo-requests.js` holds requests to simulate Domo-Safety's single core instance, as of May 2017: Medium instance on Exoscale.
 
+#### launch multiple concurrency sets
+
+`sh scripts/domo-safety/emfit-requests.sh` makes 10 runs of batch events.create. Each run has a different concurrency setup, from 1 to 10, ie.: first makes each request in serie, second has 2 parallel requests, third has 3, etc.  
+The results are written in `results/domo-safety/`.
 
 ## Generators
 
