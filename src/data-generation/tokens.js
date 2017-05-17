@@ -3,15 +3,8 @@ const async = require('async');
 const _ = require('lodash');
 const fs = require('fs');
 
-const usersFile = __dirname + '/../data/users.json';
+const usersFile = __dirname + '/../../json-data/users.json';
 const users = require(usersFile);
-
-const baseLogin = {
-  username: 'username',
-  password: 'password',
-  appId: 'pryv-benchmark'
-};
-
 
 let loginUsers = [];
 users.forEach((u) => {
