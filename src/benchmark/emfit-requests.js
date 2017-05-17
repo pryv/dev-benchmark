@@ -3,8 +3,11 @@ const pryv = require('pryv');
 const _ = require('lodash');
 const fs = require('fs');
 
-const concurrency = parseInt(process.argv[2]);
+let concurrency = parseInt(process.argv[2]);
 
+if (!concurrency) {
+  concurrency = 5;
+}
 
 const params = {
   emfitBatchSize: 2000,
