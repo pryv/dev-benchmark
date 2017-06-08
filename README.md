@@ -97,9 +97,9 @@ Multiple light Events.get requests. The requests should be handled in parallel.
 Here you will find links to database dumps available for benchmarking
 
 
-#### 1M dump
+#### 1M dump (MongoDB 2.4)
 
-A dump containing 1M numerical events, downloadable [here](https://drive.google.com/open?id=0B6hiVSUep65USi16cnRSZTQ2bFU).  
+A dump containing 1M numerical events, downloadable [here](https://drive.google.com/open?id=0B6hiVSUep65UV2FMMHNzYkoyS3c).  
 **Username** benchmark  
 **db userID** ciwrtttr70001b5g4jsrae21b  
 **password** 1l0v3p0t1r0nZ  
@@ -107,6 +107,11 @@ A dump containing 1M numerical events, downloadable [here](https://drive.google.
 **App token**: cizk09ayw0004p7ot4xv0sl3n  
 **personal token** generate if needed (cizk08abd0002p7otzv9r4f1l)
 
+#### 4M dump (MongoDB 3.4)
+A dump containing 4M numerical events, downloadable [here](https://drive.google.com/open?id=0B6hiVSUep65UeVpjOUF2QlFwYVk)
+**Username** testuser
+**password** testuser
+**App token** cj3n192pp00150cpky9gxpyrp
 
 ### Load dump
 
