@@ -1,0 +1,97 @@
+TODO
+########################
+######### 10k ##########
+########################
+This is ApacheBench, Version 2.3 <$Revision: 1757674 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking benchmark-ssd.pryv.li (be patient).....done
+
+
+Server Software:        nginx
+Server Hostname:        benchmark-ssd.pryv.li
+Server Port:            443
+SSL/TLS Protocol:       TLSv1.2,ECDHE-RSA-AES256-GCM-SHA384,2048,256
+TLS Server Name:        benchmark-ssd.pryv.li
+
+Document Path:          /events/?auth=cj510f9oe00050bo59wcujon5&limit=10000
+Document Length:        Variable
+
+Concurrency Level:      10
+Time taken for tests:   3.964 seconds
+Complete requests:      10
+Failed requests:        0
+Total transferred:      25571517 bytes
+HTML transferred:       25567147 bytes
+Requests per second:    2.52 [#/sec] (mean)
+Time per request:       3964.494 [ms] (mean)
+Time per request:       396.449 [ms] (mean, across all concurrent requests)
+Transfer rate:          6298.96 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:      125  130   7.3    126     147
+Processing:  2212 2770 585.1   2517    3824
+Waiting:      138  435 304.7    328    1039
+Total:       2337 2900 590.6   2643    3963
+
+Percentage of the requests served within a certain time (ms)
+  50%   2643
+  66%   3227
+  75%   3439
+  80%   3554
+  90%   3963
+  95%   3963
+  98%   3963
+  99%   3963
+ 100%   3963 (longest request)
+########################
+######### 100k #########
+########################
+This is ApacheBench, Version 2.3 <$Revision: 1757674 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking benchmark-ssd.pryv.li (be patient).....done
+
+
+Server Software:        nginx
+Server Hostname:        benchmark-ssd.pryv.li
+Server Port:            443
+SSL/TLS Protocol:       TLSv1.2,ECDHE-RSA-AES256-GCM-SHA384,2048,256
+TLS Server Name:        benchmark-ssd.pryv.li
+
+Document Path:          /events/?auth=cj510f9oe00050bo59wcujon5&limit=100000
+Document Length:        Variable
+
+Concurrency Level:      10
+Time taken for tests:   22.919 seconds
+Complete requests:      10
+Failed requests:        0
+Total transferred:      255115789 bytes
+HTML transferred:       255111419 bytes
+
+
+Requests per second:    0.44 [#/sec] (mean)
+Time per request:       22918.634 [ms] (mean)
+Time per request:       2291.863 [ms] (mean, across all concurrent requests)
+Transfer rate:          10870.48 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:      118  125   9.6    118     141
+Processing: 17766 20241 1909.9  20886   22777
+Waiting:       86  312 267.9    220     943
+Total:      17884 20366 1915.8  21005   22918
+
+Percentage of the requests served within a certain time (ms)
+  50%  21005
+  66%  21830
+  75%  21987
+  80%  22636
+  90%  22918
+  95%  22918
+  98%  22918
+  99%  22918
+ 100%  22918 (longest request)

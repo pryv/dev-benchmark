@@ -1,0 +1,42 @@
+using ab
+batchsize 3
+requests count 1000
+concurrency 10
+
+event: {"time":1385046854.282,"streamId":"diary","type":"frequency/bpm","content":90}
+
+output:
+Document Length:        864 bytes
+
+Concurrency Level:      10
+Time taken for tests:   3.976 seconds
+Complete requests:      1000
+Failed requests:        345
+   (Connect: 0, Receive: 0, Length: 345, Exceptions: 0)
+Total transferred:      1298206 bytes
+Total body sent:        529000
+HTML transferred:       863206 bytes
+Requests per second:    251.52 [#/sec] (mean)
+Time per request:       39.758 [ms] (mean)
+Time per request:       3.976 [ms] (mean, across all concurrent requests)
+Transfer rate:          318.88 [Kbytes/sec] received
+                        129.94 kb/s sent
+                        448.81 kb/s total
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.0      0       0
+Processing:    26   40   6.7     38      67
+Waiting:       25   39   6.7     38      66
+Total:         26   40   6.7     38      67
+
+Percentage of the requests served within a certain time (ms)
+  50%     38
+  66%     40
+  75%     42
+  80%     44
+  90%     49
+  95%     54
+  98%     59
+  99%     61
+ 100%     67 (longest request)

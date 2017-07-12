@@ -1,0 +1,125 @@
+batch size: 5000
+requests count: 60
+parallel requests limit: 4
+finished 0
+finished 2
+finished 1
+finished 3
+finished 7
+finished 6
+finished 4
+finished 5
+finished 8
+finished 11
+finished 9
+finished 10
+finished 12
+finished 13
+finished 14
+finished 15
+finished 16
+finished 17
+finished 19
+finished 18
+finished 20
+finished 21
+finished 22
+finished 23
+finished 24
+finished 25
+finished 26
+finished 27
+finished 28
+finished 29
+finished 31
+finished 30
+finished 32
+finished 33
+finished 35
+finished 34
+finished 36
+finished 38
+finished 39
+finished 37
+finished 40
+finished 41
+finished 42
+finished 43
+finished 44
+finished 45
+finished 46
+finished 47
+finished 48
+finished 49
+finished 50
+finished 51
+finished 52
+finished 54
+finished 53
+finished 55
+finished 58
+finished 56
+finished 57
+finished 59
+total time 329205
+requestTimes { '0': { start: 1499866527341, requestTime: 46148 },
+  '1': { start: 1499866527371, requestTime: 46271 },
+  '2': { start: 1499866527380, requestTime: 46217 },
+  '3': { start: 1499866527384, requestTime: 46286 },
+  '4': { start: 1499866573489, requestTime: 19776 },
+  '5': { start: 1499866573598, requestTime: 19742 },
+  '6': { start: 1499866573642, requestTime: 19561 },
+  '7': { start: 1499866573670, requestTime: 19496 },
+  '8': { start: 1499866593166, requestTime: 19800 },
+  '9': { start: 1499866593203, requestTime: 19824 },
+  '10': { start: 1499866593265, requestTime: 19833 },
+  '11': { start: 1499866593340, requestTime: 19656 },
+  '12': { start: 1499866612967, requestTime: 19163 },
+  '13': { start: 1499866612996, requestTime: 19304 },
+  '14': { start: 1499866613027, requestTime: 19303 },
+  '15': { start: 1499866613098, requestTime: 19319 },
+  '16': { start: 1499866632130, requestTime: 19656 },
+  '17': { start: 1499866632300, requestTime: 19570 },
+  '18': { start: 1499866632330, requestTime: 19774 },
+  '19': { start: 1499866632417, requestTime: 19650 },
+  '20': { start: 1499866651786, requestTime: 19544 },
+  '21': { start: 1499866651870, requestTime: 19487 },
+  '22': { start: 1499866652067, requestTime: 19476 },
+  '23': { start: 1499866652104, requestTime: 19538 },
+  '24': { start: 1499866671330, requestTime: 19350 },
+  '25': { start: 1499866671357, requestTime: 19406 },
+  '26': { start: 1499866671543, requestTime: 19374 },
+  '27': { start: 1499866671642, requestTime: 19399 },
+  '28': { start: 1499866690680, requestTime: 19318 },
+  '29': { start: 1499866690763, requestTime: 19343 },
+  '30': { start: 1499866690917, requestTime: 19349 },
+  '31': { start: 1499866691041, requestTime: 19192 },
+  '32': { start: 1499866709998, requestTime: 19704 },
+  '33': { start: 1499866710106, requestTime: 19792 },
+  '34': { start: 1499866710233, requestTime: 19745 },
+  '35': { start: 1499866710266, requestTime: 19674 },
+  '36': { start: 1499866729702, requestTime: 19942 },
+  '37': { start: 1499866729898, requestTime: 20282 },
+  '38': { start: 1499866729940, requestTime: 20056 },
+  '39': { start: 1499866729978, requestTime: 20157 },
+  '40': { start: 1499866749644, requestTime: 21299 },
+  '41': { start: 1499866749996, requestTime: 22785 },
+  '42': { start: 1499866750135, requestTime: 24568 },
+  '43': { start: 1499866750180, requestTime: 24637 },
+  '44': { start: 1499866770943, requestTime: 23889 },
+  '45': { start: 1499866772781, requestTime: 22116 },
+  '46': { start: 1499866774703, requestTime: 20295 },
+  '47': { start: 1499866774817, requestTime: 20255 },
+  '48': { start: 1499866794832, requestTime: 20271 },
+  '49': { start: 1499866794897, requestTime: 20233 },
+  '50': { start: 1499866794998, requestTime: 20285 },
+  '51': { start: 1499866795072, requestTime: 20367 },
+  '52': { start: 1499866815103, requestTime: 20906 },
+  '53': { start: 1499866815130, requestTime: 21029 },
+  '54': { start: 1499866815283, requestTime: 20818 },
+  '55': { start: 1499866815439, requestTime: 20944 },
+  '56': { start: 1499866836009, requestTime: 20133 },
+  '57': { start: 1499866836101, requestTime: 20313 },
+  '58': { start: 1499866836159, requestTime: 19925 },
+  '59': { start: 1499866836383, requestTime: 20161 } }
+average request time: 21928.433333333334

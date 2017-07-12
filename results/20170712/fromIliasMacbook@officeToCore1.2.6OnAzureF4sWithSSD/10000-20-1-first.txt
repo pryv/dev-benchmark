@@ -1,0 +1,45 @@
+batch size: 10000
+requests count: 20
+parallel requests limit: 1
+finished 0
+finished 1
+finished 2
+finished 3
+finished 4
+finished 5
+finished 6
+finished 7
+finished 8
+finished 9
+finished 10
+finished 11
+finished 12
+finished 13
+finished 14
+finished 15
+finished 16
+finished 17
+finished 18
+finished 19
+total time 307331
+requestTimes { '0': { start: 1499865900961, requestTime: 16550 },
+  '1': { start: 1499865917511, requestTime: 15974 },
+  '2': { start: 1499865933486, requestTime: 15874 },
+  '3': { start: 1499865949360, requestTime: 15197 },
+  '4': { start: 1499865964557, requestTime: 15089 },
+  '5': { start: 1499865979646, requestTime: 15085 },
+  '6': { start: 1499865994731, requestTime: 15063 },
+  '7': { start: 1499866009794, requestTime: 15036 },
+  '8': { start: 1499866024830, requestTime: 15482 },
+  '9': { start: 1499866040312, requestTime: 15246 },
+  '10': { start: 1499866055558, requestTime: 15367 },
+  '11': { start: 1499866070925, requestTime: 15200 },
+  '12': { start: 1499866086125, requestTime: 15328 },
+  '13': { start: 1499866101453, requestTime: 15145 },
+  '14': { start: 1499866116598, requestTime: 15501 },
+  '15': { start: 1499866132099, requestTime: 15224 },
+  '16': { start: 1499866147323, requestTime: 15248 },
+  '17': { start: 1499866162571, requestTime: 15157 },
+  '18': { start: 1499866177728, requestTime: 15362 },
+  '19': { start: 1499866193090, requestTime: 15201 } }
+average request time: 15366.45

@@ -1,0 +1,3 @@
+batch size: 10000
+requests count: 60
+parallel requests limit: 1

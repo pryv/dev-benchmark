@@ -1,0 +1,91 @@
+TODO
+########################
+######### 10k ##########
+########################
+This is ApacheBench, Version 2.3 <$Revision: 1706008 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient).....done
+
+
+Server Software:
+Server Hostname:        127.0.0.1
+Server Port:            9000
+
+Document Path:          /benchmark-ssd/events/?auth=cj510f9oe00050bo59wcujon5&limit=10000
+Document Length:        Variable
+
+Concurrency Level:      10
+Time taken for tests:   1.785 seconds
+Complete requests:      10
+Failed requests:        0
+Total transferred:      25271259 bytes
+HTML transferred:       25266989 bytes
+Requests per second:    5.60 [#/sec] (mean)
+Time per request:       1784.778 [ms] (mean)
+Time per request:       178.478 [ms] (mean, across all concurrent requests)
+Transfer rate:          13827.47 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       0
+Processing:  1228 1607 162.5   1655    1784
+Waiting:       52  182  99.5    215     317
+Total:       1228 1607 162.5   1655    1785
+
+Percentage of the requests served within a certain time (ms)
+  50%   1655
+  66%   1678
+  75%   1708
+  80%   1763
+  90%   1785
+  95%   1785
+  98%   1785
+  99%   1785
+ 100%   1785 (longest request)
+########################
+######### 100k #########
+########################
+This is ApacheBench, Version 2.3 <$Revision: 1706008 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient).....done
+
+
+Server Software:
+Server Hostname:        127.0.0.1
+Server Port:            9000
+
+Document Path:          /benchmark-ssd/events/?auth=cj510f9oe00050bo59wcujon5&limit=100000
+Document Length:        Variable
+
+Concurrency Level:      10
+Time taken for tests:   17.666 seconds
+Complete requests:      10
+Failed requests:        0
+Total transferred:      255145540 bytes
+HTML transferred:       255141270 bytes
+Requests per second:    0.57 [#/sec] (mean)
+Time per request:       17666.041 [ms] (mean)
+Time per request:       1766.604 [ms] (mean, across all concurrent requests)
+Transfer rate:          14104.21 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       0
+Processing: 16816 17346 295.5  17448   17666
+Waiting:       39  143  75.6    166     253
+Total:      16816 17347 295.5  17448   17666
+
+Percentage of the requests served within a certain time (ms)
+  50%  17448
+  66%  17490
+  75%  17574
+  80%  17653
+  90%  17666
+  95%  17666
+  98%  17666
+  99%  17666
+ 100%  17666 (longest request)

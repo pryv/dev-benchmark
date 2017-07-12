@@ -1,0 +1,25 @@
+batch size: 2000
+requests count: 10
+parallel requests limit: 2
+finished 1
+finished 0
+finished 2
+finished 3
+finished 4
+finished 5
+finished 6
+finished 7
+finished 9
+finished 8
+total time 24199
+requestTimes { '0': { start: 1499865344971, requestTime: 4849 },
+  '1': { start: 1499865345002, requestTime: 4781 },
+  '2': { start: 1499865349783, requestTime: 4722 },
+  '3': { start: 1499865349820, requestTime: 4704 },
+  '4': { start: 1499865354505, requestTime: 4923 },
+  '5': { start: 1499865354524, requestTime: 4921 },
+  '6': { start: 1499865359428, requestTime: 5008 },
+  '7': { start: 1499865359445, requestTime: 5024 },
+  '8': { start: 1499865364436, requestTime: 4733 },
+  '9': { start: 1499865364469, requestTime: 4682 } }
+average request time: 4834.7
