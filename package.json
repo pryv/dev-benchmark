@@ -1,32 +1,20 @@
 {
-  "name": "pryv-service-core-benchmark",
+  "name": "websockets-benchmark",
   "version": "1.0.0",
-  "description": "benchmarking Pryv service-core",
+  "description": "testing websockets limits on pryv.io",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kebetsi/pryv-service-core-benchmark.git"
-  },
-  "keywords": [
-    "benchmark",
-    "pryv",
-    "core"
-  ],
-  "author": "Ilia Kebets",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kebetsi/pryv-service-core-benchmark/issues"
-  },
-  "homepage": "https://github.com/kebetsi/pryv-service-core-benchmark#readme",
+  "author": "Ilia Kebets <kebetsi@gmail.com>",
+  "license": "MIT",
+  "private": true,
   "dependencies": {
-    "async": "^2.1.5",
-    "lodash": "^4.17.4",
-    "minimist": "^1.2.0",
-    "pryv": "^1.0.0",
-    "pyUtils": "git+ssh://git@github.com:kebetsi/pryv-js-utils.git",
-    "superagent": "^3.5.0"
+    "asyncawait": "^1.0.7",
+    "bluebird": "^3.5.1",
+    "csv-parse": "^3.0.0",
+    "hooks-engine": "git+ssh://git@github.com:pryv/hooks-engine.git#project/obpm-hooks",
+    "lodash": "^4.17.10",
+    "mkdirp": "^0.5.1",
+    "nconf": "^0.10.0",
+    "pryv": "^1.0.8",
+    "superagent": "^3.8.3"
   }
 }

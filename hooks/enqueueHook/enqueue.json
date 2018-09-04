@@ -1,0 +1,25 @@
+{
+  "user": {
+    "username": "OVERRIDE ON LOAD",
+    "token": "OVERRIDE ON LOAD",
+    "domain": "OVERRIDE ON LOAD",
+    "currentJobsSent": 0
+  },
+  "system": {
+    "INPUT_STREAM_ID": "riva-obpm-app-input",
+    "INPUT_TYPE": "obpm-csem-algo/v1",
+    "TO_PROCESS_TAG": "toProcess",
+    "FAULTY_TAG": "faulty",
+    "queue": {
+      "hostname": "localhost",
+      "port": 7421,
+      "path": "/queue",
+      "headers": {
+        "Authorization": "OVERRIDE ME",
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  "successiveFailures": 0,
+  "faulty": false
+}
