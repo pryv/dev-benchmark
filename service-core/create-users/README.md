@@ -1,11 +1,8 @@
-# benchmark-max-users
-Benchmarking 100k users on core-hooks engine system
+# Create users
+
+Creates users with tokens and streams.
 
 ## Usage
-
-### create users 
-
-creates users with tokens and streams.
 
 Run `node createUsers.js NUM_USERS | tee output.csv` 
 
