@@ -1,9 +1,10 @@
 const fs = require('fs');
 var parse = require('csv-parse/lib/sync');
 
-const OUTPUT_FILENAME = 'users.json';
+const OUTPUT_FILENAME = __dirname + '/users/obpm-dev.io/users.json';
+const SOURCE_DIR = __dirname + '/users/obpm-dev.io';
 
-let files = fs.readdirSync('./');
+let files = fs.readdirSync(SOURCE_DIR);
 const userCredsFiles = [];
 
 files.forEach((f) => {
@@ -16,7 +17,7 @@ console.log('files', userCredsFiles)
 const totalUsers = [];
 
 userCredsFiles.forEach((f) => {
-    const input = fs.readFileSync(f);
+    const input = fs.readFileSync(__dirname + '/users/obpm-dev.io/' + f);
     console.log('read file', f, 'size', input.length)
     const records = parse(input, {columns: true});    
     
