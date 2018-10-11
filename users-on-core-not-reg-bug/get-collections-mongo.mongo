@@ -1,0 +1,2 @@
+use pryv-node;
+show collections;

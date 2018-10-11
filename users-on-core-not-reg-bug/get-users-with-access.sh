@@ -1,0 +1,1 @@
+cat get-collections-mongo.mongo /app/bin/mongodb/bin/mongo | grep accesses > users-with-accesses.txt
