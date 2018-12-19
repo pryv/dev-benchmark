@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 
-const redisUsersRaw = fs.readFileSync(__dirname + '/obpmprod.ch/users.redis.txt', {encoding: 'utf8'});
+const redisUsersRaw = fs.readFileSync(__dirname + '/obpmprod.ch-n4a/users.redis.txt', {encoding: 'utf8'});
 
 const redisUsersLines = redisUsersRaw.split('\n');
 //console.log('lines', redisUsersLines);
@@ -15,7 +15,7 @@ redisUsersLines.forEach((line) => {
 
 //console.log('users', redisUsers)
 
-const allUsersRaw = fs.readFileSync(__dirname + '/obpmprod.ch/all-users.txt', { encoding: 'utf8' });
+const allUsersRaw = fs.readFileSync(__dirname + '/obpmprod.ch-n4a/all-users.txt', { encoding: 'utf8' });
 const allUsersLines = allUsersRaw.split('\n');
 
 const allUsers = [];
@@ -25,7 +25,7 @@ allUsersLines.forEach((line, i) => {
 })
 //console.log(allUsers)
 
-const usersWithAccessesRaw = fs.readFileSync(__dirname + '/obpmprod.ch/users-with-accesses.txt', { encoding: 'utf8' });
+const usersWithAccessesRaw = fs.readFileSync(__dirname + '/obpmprod.ch-n4a/user-ids-with-accesses.txt', { encoding: 'utf8' });
 const usersWithAccessesLines = usersWithAccessesRaw.split('\n');
 
 const usersWithAccessesIds = [];

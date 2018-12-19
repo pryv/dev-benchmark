@@ -11,7 +11,7 @@ In order to prioritize the fix of this issue, we must know how often it happens.
 ### Fetch data on core
 
 1. ssh to core
-2. enter mongodb container: `docker exec -ti pryv_mongodb_1 /bin/bash`
+2. enter mongodb container: `docker exec -ti pryv_mongodb_1 /app/bin/mongodb/bin/mongo`
 3. `cd /app/log`
 4. `cat get-all-users.mongo | /app/bin/mongodb/bin/mongo > all-users.txt`
 5. `cat get-collections.mongo | /app/bin/mongodb/bin/mongo | grep accesses > user-ids-with-accesses.txt`

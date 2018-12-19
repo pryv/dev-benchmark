@@ -1,0 +1,5 @@
+
+// run using: cat usersCreateOnRedis.txt > redis-cli
+
+HMSET user-0:users appid "dontcare" username "user-0" email "user-0@bogus.tk" invitationToken "enjoy" referer null language "en" id "ENTER_CUID" "registeredTimestamp" "NOW_MILLIS"
+appid
