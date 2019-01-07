@@ -414,7 +414,7 @@ function backgroundRead() {
         readSuccesses++;
         stats.background.reads.values.push({
           timestamp: startTime - Date.now(),
-          requestTime: Date.now(),
+          requestTime: Date.now() - s,
           status: res.status,
         });
         accept();
@@ -423,7 +423,7 @@ function backgroundRead() {
         errors.read++;
         stats.background.reads.values.push({
           timestamp: startTime - Date.now(),
-          requestTime: Date.now(),
+          requestTime: Date.now() - s,
           status: e.status,
         });
         accept();
@@ -442,7 +442,7 @@ function backgroundWrite() {
         writeSuccesses++;
         stats.background.writes.values.push({
           timestamp: startTime - Date.now(),
-          requestTime: Date.now(),
+          requestTime: Date.now() - s,
           status: res.status,
         });
         accept();
@@ -451,7 +451,7 @@ function backgroundWrite() {
         errors.write++;
         stats.background.writes.values.push({
           timestamp: startTime - Date.now(),
-          requestTime: Date.now(),
+          requestTime: Date.now() - s,
           status: e.status,
         });
         accept();
