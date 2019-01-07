@@ -404,12 +404,12 @@ async function createBackgroundUser() {
   await createStream(backgroundUser.username, backgroundUser.token);
 }
 
-function backgroundRead(username, token) {
+function backgroundRead() {
   return new bluebird((accept, reject) => {
     const s = Date.now();
-    request.get(URL_ENDPOINT + '/' + username + '/events/')
+    request.get(URL_ENDPOINT + '/' + backgroundUser.username + '/events/')
       .set('Content-Type', 'application/json')
-      .set('Authorization', token)
+      .set('Authorization', backgroundUser.token)
       .send({}).then((res) => {
         readSuccesses++;
         stats.background.reads.values.push({
@@ -431,14 +431,14 @@ function backgroundRead(username, token) {
   });
 }
 
-function backgroundWrite(username, token) {
+function backgroundWrite() {
   return new bluebird((accept, reject) => {
     const s = Date.now();
-    request.post(URL_ENDPOINT + '/' + username + '/events/')
+    request.post(URL_ENDPOINT + '/' + backgroundUser.username + '/events/')
       .set('Content-Type', 'application/json')
-      .set('Authorization', token)
+      .set('Authorization', backgroundUser.token)
       .send({ streamId: 'diary', type: 'note/txt', content: 'a'})
-      .then(() => {
+      .then((res) => {
         writeSuccesses++;
         stats.background.writes.values.push({
           timestamp: startTime - Date.now(),
