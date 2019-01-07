@@ -82,6 +82,32 @@ const stats = {
       min: 99999999999,
       max: 0,
     },
+  },
+  background: {
+    reads: {
+      mean: 0,
+      min: 99999999,
+      max: 0,
+      values: [
+        {
+          timestamp: 0,
+          requestTime: 0,
+          status: 0
+        }
+      ]
+    },
+    writes: {
+      mean: 0,
+      min: 99999999,
+      max: 0,
+      values: [
+        {
+          timestamp: 0,
+          requestTime: 0,
+          status: 0
+        }
+      ]
+    },
   }
 };
 
@@ -159,6 +185,19 @@ function computeResults() {
     if (a.requestTime > stats.usage.eventCreations.max) stats.usage.eventCreations.max = a.requestTime;
   });
   stats.usage.eventCreations.mean = stats.usage.eventCreations.mean / stats.usage.eventCreations.values.length;
+
+  stats.background.reads.values.forEach((a) => {
+    stats.background.reads.mean += a.requestTime;
+    if (a.requestTime < stats.background.reads.min) stats.background.reads.min = a.requestTime;
+    if (a.requestTime > stats.background.reads.max) stats.background.reads.max = a.requestTime;
+  });
+  stats.background.reads.mean = stats.background.reads.mean / stats.background.reads.values.length;
+  stats.background.writes.values.forEach((a) => {
+    stats.background.writes.mean += a.requestTime;
+    if (a.requestTime < stats.background.writes.min) stats.background.writes.min = a.requestTime;
+    if (a.requestTime > stats.background.writes.max) stats.background.writes.max = a.requestTime;
+  });
+  stats.background.writes.mean = stats.background.writes.mean / stats.background.writes.values.length;
   
   stats.main.unit = 's';
   stats.main.totalTime = totalTime;
@@ -170,7 +209,13 @@ function computeResults() {
   stats.main.usageConcurrency = CONCURRENCY;
   stats.main.background = {
     interval: BACKGROUND_INTERVAL,
-    unit: 'ms' 
+    unit: 'ms' ,
+    reads: {
+      successes: readSuccesses,
+    },
+    writes: {
+      successes: writeSuccesses,
+    }
   };
   stats.main.errors = errors;
 
@@ -251,9 +296,10 @@ function createPoolUser(user, index) {
   });
 }
 
-function createUser() {
+function createUser(prefix) {
   return new bluebird((accept, reject) => {
-    const username = cuid().slice(10);
+    prefix = prefix | '';
+    const username = prefix + cuid().slice(10);
     const s = Date.now();
     request.post(URL_ENDPOINT + '/system/create-user')
       .set('Content-Type', 'application/json')
@@ -353,22 +399,33 @@ function createEvent(username, token) {
 }
 
 async function createBackgroundUser() {
-  backgroundUser.username = await createUser();
+  backgroundUser.username = await createUser('background');
   backgroundUser.token = await loginUser(backgroundUser.username);
   await createStream(backgroundUser.username, backgroundUser.token);
 }
 
 function backgroundRead(username, token) {
   return new bluebird((accept, reject) => {
+    const s = Date.now();
     request.get(URL_ENDPOINT + '/' + username + '/events/')
       .set('Content-Type', 'application/json')
       .set('Authorization', token)
-      .send({}).then(() => {
+      .send({}).then((res) => {
         readSuccesses++;
+        stats.background.reads.values.push({
+          timestamp: startTime - Date.now(),
+          requestTime: Date.now(),
+          status: res.status,
+        });
         accept();
       })
       .catch((e) => {
         errors.read++;
+        stats.background.reads.values.push({
+          timestamp: startTime - Date.now(),
+          requestTime: Date.now(),
+          status: e.status,
+        });
         accept();
       })
   });
@@ -376,16 +433,27 @@ function backgroundRead(username, token) {
 
 function backgroundWrite(username, token) {
   return new bluebird((accept, reject) => {
+    const s = Date.now();
     request.post(URL_ENDPOINT + '/' + username + '/events/')
       .set('Content-Type', 'application/json')
       .set('Authorization', token)
       .send({ streamId: 'diary', type: 'note/txt', content: 'a'})
       .then(() => {
         writeSuccesses++;
+        stats.background.writes.values.push({
+          timestamp: startTime - Date.now(),
+          requestTime: Date.now(),
+          status: res.status,
+        });
         accept();
       })
       .catch((e) => {
         errors.write++;
+        stats.background.writes.values.push({
+          timestamp: startTime - Date.now(),
+          requestTime: Date.now(),
+          status: e.status,
+        });
         accept();
       })
   });
