@@ -226,7 +226,8 @@ function computeResults() {
   console.log('Nbr of users:', NUM_USERS);
   console.log('Pool size:', POOL_SIZE);
   console.log('Errors count:', errors);
-  console.log('Reads:', readSuccesses);
+  console.log('Background reads:', readSuccesses);
+  console.log('Background writes:', writeSuccesses);
   console.log('Background interval (ms)', BACKGROUND_INTERVAL);
   console.log('Concurrency:', CONCURRENCY);
   console.log('Concurrency (pool):', CONCURRENCY_POOL);
