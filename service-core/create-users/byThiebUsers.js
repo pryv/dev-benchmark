@@ -1,6 +1,7 @@
 const request = require('superagent');
 const bluebird = require('bluebird');
 const cuid = require('cuid');
+const fs = require('fs');
 
 if (process.argv.length < 4) {
   console.log('please provide the nbr of users and pool size');
@@ -16,6 +17,80 @@ const READS_INTERVAL = 1000;
 
 const URL_ENDPOINT = 'http://localhost:11223';
 
+const stats = {
+  unit: 'ms',
+  main: {
+    poolTime: 0,
+    usageTime: 0,
+    totalTime: 0,
+  },
+  pool: {
+    creationTimes: {
+      values: [
+        {
+          timestamp: 0,
+          requestTime: 0
+        }
+      ],
+      mean: 0,
+      min: 99999999999,
+      max: 0,
+    },
+  },
+  usage: {
+    userCreations: {
+      values: [
+        {
+          timestamp: 0,
+          requestTime: 0
+        }
+      ],
+      mean: 0,
+      min: 99999999999,
+      max: 0,
+    },
+    logins: {
+      values: [
+        {
+          timestamp: 0,
+          requestTime: 0
+        }
+      ],
+      mean: 0,
+      min: 99999999999,
+      max: 0,
+    },
+    streamCreations: {
+      values: [
+        {
+          timestamp: 0,
+          requestTime: 0
+        }
+      ],
+      mean: 0,
+      min: 99999999999,
+      max: 0,
+    },
+    eventCreations: {
+      values: [
+        {
+          timestamp: 0,
+          requestTime: 0
+        }
+      ],
+      mean: 0,
+      min: 99999999999,
+      max: 0,
+    },
+  }
+};
+
+stats.pool.creationTimes.values = [];
+stats.usage.userCreations.values = [];
+stats.usage.logins.values = [];
+stats.usage.streamCreations.values = [];
+stats.usage.eventCreations.values = [];
+
 const errors = {
   createUser: 0,
   createPool: 0,
@@ -30,6 +105,8 @@ let readSuccesses = 0;
 
 let poolTime;
 let totalTime;
+let startPool;
+let startUsage;
 
 const startTime = Date.now();
 
@@ -38,13 +115,53 @@ bluebird.resolve(scenario(NUM_USERS, POOL_SIZE))
     if (backgroundReads) clearInterval(backgroundReads);
     totalTime = computeTimeSeconds(startTime);
     computeResults();
+    writeStats();
   });
 
 function computeResults() {
+  stats.pool.creationTimes.values.forEach((a) => {
+    stats.pool.creationTimes.mean += a.requestTime;
+    if (a.requestTime < stats.pool.creationTimes.min) stats.pool.creationTimes.min = a.requestTime;
+    if (a.requestTime > stats.pool.creationTimes.max) stats.pool.creationTimes.max = a.requestTime;
+  });
+  stats.pool.creationTimes.mean = stats.pool.creationTimes.mean / stats.pool.creationTimes.values.length;
+  stats.usage.userCreations.values.forEach((a) => {
+    stats.usage.userCreations.mean += a.requestTime;
+    if (a.requestTime < stats.usage.userCreations.min) stats.usage.userCreations.min = a.requestTime;
+    if (a.requestTime > stats.usage.userCreations.max) stats.usage.userCreations.max = a.requestTime;
+  });
+  stats.usage.userCreations.mean = stats.usage.userCreations.mean / stats.usage.userCreations.values.length;
+  stats.usage.logins.values.forEach((a) => {
+    stats.usage.logins.mean += a.requestTime;
+    if (a.requestTime < stats.usage.logins.min) stats.usage.logins.min = a.requestTime;
+    if (a.requestTime > stats.usage.logins.max) stats.usage.logins.max = a.requestTime;
+  });
+  stats.usage.logins.mean = stats.usage.logins.mean / stats.usage.logins.values.length;
+  stats.usage.streamCreations.values.forEach((a) => {
+    stats.usage.streamCreations.mean += a.requestTime;
+    if (a.requestTime < stats.usage.streamCreations.min) stats.usage.streamCreations.min = a.requestTime;
+    if (a.requestTime > stats.usage.streamCreations.max) stats.usage.streamCreations.max = a.requestTime;
+  });
+  stats.usage.streamCreations.mean = stats.usage.streamCreations.mean / stats.usage.streamCreations.values.length;
+  stats.usage.eventCreations.values.forEach((a) => {
+    stats.usage.eventCreations.mean += a.requestTime;
+    if (a.requestTime < stats.usage.eventCreations.min) stats.usage.eventCreations.min = a.requestTime;
+    if (a.requestTime > stats.usage.eventCreations.max) stats.usage.eventCreations.max = a.requestTime;
+  });
+  stats.usage.eventCreations.mean = stats.usage.eventCreations.mean / stats.usage.eventCreations.values.length;
+  
+  stats.main.totalTime = totalTime;
+  stats.main.poolTime = poolTime;
+  stats.main.usageTime = totalTime - poolTime;
+  stats.main.poolSize = POOL_SIZE;
+  stats.main.poolConcurrency = CONCURRENCY_POOL;
+  stats.main.usersSize = NUM_USERS;
+  stats.main.usageConcurrency = CONCURRENCY;
+
   console.log('***********************************************************');
-  console.log('Total time:', totalTime);
-  console.log('Pool creation time:', poolTime);
-  console.log('Total time without pool creation:', totalTime - poolTime);
+  console.log('Total time (s):', totalTime);
+  console.log('Pool creation time (s):', poolTime);
+  console.log('Total time without pool creation (s):', totalTime - poolTime);
   console.log('Nbr of users:', NUM_USERS);
   console.log('Pool size:', POOL_SIZE);
   console.log('Errors count:', errors);
@@ -52,15 +169,27 @@ function computeResults() {
   console.log('Reads interval', READS_INTERVAL);
   console.log('Concurrency:', CONCURRENCY);
   console.log('Concurrency (pool):', CONCURRENCY_POOL);
+  console.log('###############');
+  console.log('Latencies: mean/min/max (ms)');
+  console.log('pool:', stats.pool.creationTimes.mean, '/', stats.pool.creationTimes.min, '/', stats.pool.creationTimes.max); 
+  console.log('userCreations:', stats.usage.userCreations.mean, '/', stats.usage.userCreations.min, '/', stats.usage.userCreations.max);
+  console.log('logins:', stats.usage.logins.mean, '/', stats.usage.logins.min, '/', stats.usage.logins.max);
+  console.log('streamCreations:', stats.usage.streamCreations.mean, '/', stats.usage.streamCreations.min, '/', stats.usage.streamCreations.max);
+  console.log('eventCreations:', stats.usage.eventCreations.mean, '/', stats.usage.eventCreations.min, '/', stats.usage.eventCreations.max);
   console.log('***********************************************************');
 }
 
+function writeStats() {
+  fs.writeFileSync(new Date().toISOString() + '-stats.json', JSON.stringify(stats));
+}
+
 async function scenario(usersNbr, poolSize) {
-  const startPool = Date.now();
+  startPool = Date.now();
   await bluebird.map(new Array(poolSize), createPoolUser, {
     concurrency: CONCURRENCY_POOL,
   });
   poolTime = computeTimeSeconds(startPool);
+  startUsage = Date.now();
   if (READS_INTERVAL) backgroundReads = setInterval(backgroundRead, READS_INTERVAL);
   return await bluebird.map(new Array(usersNbr), actionPerUser, {
     concurrency: CONCURRENCY,
@@ -70,9 +199,9 @@ async function scenario(usersNbr, poolSize) {
 async function actionPerUser(user, idx) {
   try {
     const username = await createUser();
-    const token = await loginUser(username);
-    await createStream(username, token);
-    await createEvent(username, token);
+    const token = await loginUser(username, idx);
+    await createStream(username, token, idx);
+    await createEvent(username, token, idx);
     console.log('done user ok', idx)
     return bluebird.resolve();
   } catch (e) {
@@ -83,11 +212,16 @@ async function actionPerUser(user, idx) {
 
 function createPoolUser(user, index) {
   return new bluebird((accept, reject) => {
+    const s = Date.now();
     request.post(URL_ENDPOINT + '/system/pool/create-user')
       .set('Content-Type', 'application/json')
       .set('Authorization', 'OVERRIDE ME')
       .send({}).then(() => {
         console.log('done pool', index)
+        stats.pool.creationTimes.values.push({
+          timestamp: Date.now() - startPool,
+          requestTime: Date.now() - s
+        })
         accept();
       })
       .catch((e) => {
@@ -101,7 +235,7 @@ function createPoolUser(user, index) {
 function createUser() {
   return new bluebird((accept, reject) => {
     const username = cuid().slice(10);
-
+    const s = Date.now();
     request.post(URL_ENDPOINT + '/system/create-user')
       .set('Content-Type', 'application/json')
       .set('Authorization', 'OVERRIDE ME')
@@ -111,6 +245,10 @@ function createUser() {
         email: username + '@test.com',
         language: 'en'
       }).then(() => {
+        stats.usage.userCreations.values.push({
+          timestamp: Date.now() - startUsage,
+          requestTime: Date.now() - s
+        });
         accept(username);
       })
       .catch((e) => {
@@ -123,6 +261,7 @@ function createUser() {
 
 function loginUser(username) {
   return new bluebird((accept, reject) => {
+    const s = Date.now();
     request.post(URL_ENDPOINT + '/' + username + '/auth/login')
       .set('Content-Type', 'application/json')
       .send({
@@ -130,6 +269,10 @@ function loginUser(username) {
         password: PASSWORD,
         appId: 'pryv-browser'
       }).then((res) => {
+        stats.usage.logins.values.push({
+          timestamp: Date.now() - startUsage,
+          requestTime: Date.now() - s
+        });
         accept(res.body.token);
       })
       .catch((e) => {
@@ -141,6 +284,7 @@ function loginUser(username) {
 
 function createStream(username, token) {
   return new bluebird((accept, reject) => {
+    const s = Date.now();
     request.post(URL_ENDPOINT + '/' + username + '/streams')
       .set('Content-Type', 'application/json')
       .set('Authorization', token)
@@ -148,6 +292,10 @@ function createStream(username, token) {
         id: 'diary',
         name: 'note/txt',
       }).then(() => {
+        stats.usage.streamCreations.values.push({
+          timestamp: Date.now() - startUsage,
+          requestTime: Date.now() - s
+        });
         accept();
       })
       .catch((e) => {
@@ -159,6 +307,7 @@ function createStream(username, token) {
 
 function createEvent(username, token) {
   return new bluebird((accept, reject) => {
+    const s = Date.now();
     request.post(URL_ENDPOINT + '/' + username + '/events')
       .set('Content-Type', 'application/json')
       .set('Authorization', token)
@@ -167,6 +316,10 @@ function createEvent(username, token) {
         type: 'note/txt',
         content: 'This is an example.'
       }).then(() => {
+        stats.usage.eventCreations.values.push({
+          timestamp: Date.now() - startUsage,
+          requestTime: Date.now() - s
+        });
         accept();
       })
       .catch((e) => {
