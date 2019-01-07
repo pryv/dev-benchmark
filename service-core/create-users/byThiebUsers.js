@@ -298,7 +298,7 @@ function createPoolUser(user, index) {
 
 function createUser(prefix) {
   return new bluebird((accept, reject) => {
-    prefix = prefix | '';
+    prefix = prefix || '';
     const username = prefix + cuid().slice(10);
     const s = Date.now();
     request.post(URL_ENDPOINT + '/system/create-user')
@@ -399,7 +399,7 @@ function createEvent(username, token) {
 }
 
 async function createBackgroundUser() {
-  backgroundUser.username = await createUser('background');
+  backgroundUser.username = await createUser('bkgrnd-');
   backgroundUser.token = await loginUser(backgroundUser.username);
   await createStream(backgroundUser.username, backgroundUser.token);
 }
