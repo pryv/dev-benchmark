@@ -291,6 +291,11 @@ function createPoolUser(user, index) {
       .catch((e) => {
         console.log('got err', e)
         errors.createPool++;
+        stats.pool.creationTimes.values.push({
+          timestamp: Date.now() - startPool,
+          requestTime: Date.now() - s,
+          status: e.status,
+        })
         accept();
       })
   });
@@ -319,7 +324,11 @@ function createUser(prefix) {
       })
       .catch((e) => {
         errors.createUser++;
-        console.log('user create error', e)
+        stats.usage.userCreations.values.push({
+          timestamp: Date.now() - startUsage,
+          requestTime: Date.now() - s,
+          status: e.status,
+        });
         accept();
       })
   });
@@ -344,6 +353,11 @@ function loginUser(username) {
       })
       .catch((e) => {
         errors.login++;
+        stats.usage.logins.values.push({
+          timestamp: Date.now() - startUsage,
+          requestTime: Date.now() - s,
+          status: e.status,
+        });
         accept();
       })
   });
@@ -368,6 +382,11 @@ function createStream(username, token) {
       })
       .catch((e) => {
         errors.createStream++;
+        stats.usage.streamCreations.values.push({
+          timestamp: Date.now() - startUsage,
+          requestTime: Date.now() - s,
+          status: e.status,
+        });
         accept();
       })
   });
@@ -393,6 +412,11 @@ function createEvent(username, token) {
       })
       .catch((e) => {
         errors.createEvent++;
+        stats.usage.eventCreations.values.push({
+          timestamp: Date.now() - startUsage,
+          requestTime: Date.now() - s,
+          status: e.status,
+        });
         accept();
       })
   });
