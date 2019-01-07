@@ -13,7 +13,7 @@ const CONCURRENCY = 10;
 const CONCURRENCY_POOL = 5;
 const PASSWORD = 't3st-Z3r0';
 const PASSWORD_HASH = '$2a$10$t2GLJUNIDl34ru4V2adFv.aAabBgy7yC2FVJSjl0oazfP4O6H.7v2';
-const READS_INTERVAL = 1000;
+const BACKGROUND_INTERVAL = 1000;
 
 const URL_ENDPOINT = 'http://localhost:11223';
 
@@ -98,10 +98,19 @@ const errors = {
   createStream: 0,
   createEvent: 0,
   read: 0,
+  write: 0,
 }
 
+const backgroundUser = {
+  username: '',
+  token: '',
+  streamId: 'diary',
+};
+
 let backgroundReads;
+let backgroundWrites;
 let readSuccesses = 0;
+let writeSuccesses = 0;
 
 let poolTime;
 let totalTime;
@@ -113,6 +122,7 @@ const startTime = Date.now();
 bluebird.resolve(scenario(NUM_USERS, POOL_SIZE))
   .finally(() => {
     if (backgroundReads) clearInterval(backgroundReads);
+    if (backgroundWrites) clearInterval(backgroundWrites);
     totalTime = computeTimeSeconds(startTime);
     computeResults();
     writeStats();
@@ -150,6 +160,7 @@ function computeResults() {
   });
   stats.usage.eventCreations.mean = stats.usage.eventCreations.mean / stats.usage.eventCreations.values.length;
   
+  stats.main.unit = 's';
   stats.main.totalTime = totalTime;
   stats.main.poolTime = poolTime;
   stats.main.usageTime = totalTime - poolTime;
@@ -157,6 +168,10 @@ function computeResults() {
   stats.main.poolConcurrency = CONCURRENCY_POOL;
   stats.main.usersSize = NUM_USERS;
   stats.main.usageConcurrency = CONCURRENCY;
+  stats.main.background = {
+    interval: BACKGROUND_INTERVAL,
+    unit: 'ms' 
+  };
 
   console.log('***********************************************************');
   console.log('Total time (s):', totalTime);
@@ -166,7 +181,7 @@ function computeResults() {
   console.log('Pool size:', POOL_SIZE);
   console.log('Errors count:', errors);
   console.log('Reads:', readSuccesses);
-  console.log('Reads interval', READS_INTERVAL);
+  console.log('Background interval (ms)', BACKGROUND_INTERVAL);
   console.log('Concurrency:', CONCURRENCY);
   console.log('Concurrency (pool):', CONCURRENCY_POOL);
   console.log('###############');
@@ -184,13 +199,15 @@ function writeStats() {
 }
 
 async function scenario(usersNbr, poolSize) {
+  await createBackgroundUser();
   startPool = Date.now();
   await bluebird.map(new Array(poolSize), createPoolUser, {
     concurrency: CONCURRENCY_POOL,
   });
   poolTime = computeTimeSeconds(startPool);
   startUsage = Date.now();
-  if (READS_INTERVAL) backgroundReads = setInterval(backgroundRead, READS_INTERVAL);
+  if (BACKGROUND_INTERVAL) backgroundReads = setInterval(backgroundRead, BACKGROUND_INTERVAL);
+  if (BACKGROUND_INTERVAL) backgroundWrites = setInterval(backgroundWrite, BACKGROUND_INTERVAL);
   return await bluebird.map(new Array(usersNbr), actionPerUser, {
     concurrency: CONCURRENCY,
   });
@@ -329,17 +346,40 @@ function createEvent(username, token) {
   });
 }
 
-function backgroundRead() {
+async function createBackgroundUser() {
+  backgroundUser.username = await createUser();
+  backgroundUser.token = await loginUser(backgroundUser.username);
+  await createStream(backgroundUser.username, backgroundUser.token);
+}
+
+function backgroundRead(username, token) {
   return new bluebird((accept, reject) => {
-    request.post(URL_ENDPOINT + '/system/pool/size')
+    request.get(URL_ENDPOINT + '/' + username + '/events/')
       .set('Content-Type', 'application/json')
-      .set('Authorization', 'OVERRIDE ME')
+      .set('Authorization', token)
       .send({}).then(() => {
         readSuccesses++;
         accept();
       })
       .catch((e) => {
         errors.read++;
+        accept();
+      })
+  });
+}
+
+function backgroundWrite(username, token) {
+  return new bluebird((accept, reject) => {
+    request.post(URL_ENDPOINT + '/' + username + '/events/')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', token)
+      .send({ streamId: 'diary', type: 'note/txt', content: 'a'})
+      .then(() => {
+        writeSuccesses++;
+        accept();
+      })
+      .catch((e) => {
+        errors.write++;
         accept();
       })
   });
