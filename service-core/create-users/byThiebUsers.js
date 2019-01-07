@@ -413,7 +413,7 @@ function backgroundRead() {
       .send({}).then((res) => {
         readSuccesses++;
         stats.background.reads.values.push({
-          timestamp: startTime - Date.now(),
+          timestamp: Date.now() - startUsage,
           requestTime: Date.now() - s,
           status: res.status,
         });
@@ -422,7 +422,7 @@ function backgroundRead() {
       .catch((e) => {
         errors.read++;
         stats.background.reads.values.push({
-          timestamp: startTime - Date.now(),
+          timestamp: Date.now() - startUsage,
           requestTime: Date.now() - s,
           status: e.status,
         });
@@ -441,7 +441,7 @@ function backgroundWrite() {
       .then((res) => {
         writeSuccesses++;
         stats.background.writes.values.push({
-          timestamp: startTime - Date.now(),
+          timestamp: Date.now() - startUsage,
           requestTime: Date.now() - s,
           status: res.status,
         });
@@ -450,7 +450,7 @@ function backgroundWrite() {
       .catch((e) => {
         errors.write++;
         stats.background.writes.values.push({
-          timestamp: startTime - Date.now(),
+          timestamp: Date.now() - startUsage,
           requestTime: Date.now() - s,
           status: e.status,
         });
