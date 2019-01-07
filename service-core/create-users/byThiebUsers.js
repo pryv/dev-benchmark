@@ -172,6 +172,7 @@ function computeResults() {
     interval: BACKGROUND_INTERVAL,
     unit: 'ms' 
   };
+  stats.main.errors = errors;
 
   console.log('***********************************************************');
   console.log('Total time (s):', totalTime);
@@ -233,11 +234,12 @@ function createPoolUser(user, index) {
     request.post(URL_ENDPOINT + '/system/pool/create-user')
       .set('Content-Type', 'application/json')
       .set('Authorization', 'OVERRIDE ME')
-      .send({}).then(() => {
+      .send({}).then((res) => {
         console.log('done pool', index)
         stats.pool.creationTimes.values.push({
           timestamp: Date.now() - startPool,
-          requestTime: Date.now() - s
+          requestTime: Date.now() - s,
+          status: res.status,
         })
         accept();
       })
@@ -261,10 +263,11 @@ function createUser() {
         passwordHash: PASSWORD_HASH,
         email: username + '@test.com',
         language: 'en'
-      }).then(() => {
+      }).then((res) => {
         stats.usage.userCreations.values.push({
           timestamp: Date.now() - startUsage,
-          requestTime: Date.now() - s
+          requestTime: Date.now() - s,
+          status: res.status,
         });
         accept(username);
       })
@@ -288,7 +291,8 @@ function loginUser(username) {
       }).then((res) => {
         stats.usage.logins.values.push({
           timestamp: Date.now() - startUsage,
-          requestTime: Date.now() - s
+          requestTime: Date.now() - s,
+          status: res.status,
         });
         accept(res.body.token);
       })
@@ -308,10 +312,11 @@ function createStream(username, token) {
       .send({
         id: 'diary',
         name: 'note/txt',
-      }).then(() => {
+      }).then((res) => {
         stats.usage.streamCreations.values.push({
           timestamp: Date.now() - startUsage,
-          requestTime: Date.now() - s
+          requestTime: Date.now() - s,
+          status: res.status,
         });
         accept();
       })
@@ -332,10 +337,11 @@ function createEvent(username, token) {
         streamId: 'diary',
         type: 'note/txt',
         content: 'This is an example.'
-      }).then(() => {
+      }).then((res) => {
         stats.usage.eventCreations.values.push({
           timestamp: Date.now() - startUsage,
-          requestTime: Date.now() - s
+          requestTime: Date.now() - s,
+          status: res.status,
         });
         accept();
       })
