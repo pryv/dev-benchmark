@@ -15,7 +15,8 @@ const PASSWORD = 't3st-Z3r0';
 const PASSWORD_HASH = '$2a$10$t2GLJUNIDl34ru4V2adFv.aAabBgy7yC2FVJSjl0oazfP4O6H.7v2';
 const BACKGROUND_INTERVAL = 1000;
 
-const URL_ENDPOINT = 'http://localhost:11223';
+const URL_ENDPOINT = 'https://co3.pryv.li';
+const CORE_ADMIN_KEY = 'ZSBt6e5xash';
 
 const stats = {
   unit: 'ms',
@@ -279,7 +280,7 @@ function createPoolUser(user, index) {
     const s = Date.now();
     request.post(URL_ENDPOINT + '/system/pool/create-user')
       .set('Content-Type', 'application/json')
-      .set('Authorization', 'OVERRIDE ME')
+      .set('Authorization', CORE_ADMIN_KEY)
       .send({}).then((res) => {
         console.log('done pool', index)
         stats.pool.creationTimes.values.push({
@@ -309,7 +310,7 @@ function createUser(prefix) {
     const s = Date.now();
     request.post(URL_ENDPOINT + '/system/create-user')
       .set('Content-Type', 'application/json')
-      .set('Authorization', 'OVERRIDE ME')
+      .set('Authorization', CORE_ADMIN_KEY)
       .send({
         username: username,
         passwordHash: PASSWORD_HASH,
@@ -340,6 +341,7 @@ function loginUser(username) {
     const s = Date.now();
     request.post(URL_ENDPOINT + '/' + username + '/auth/login')
       .set('Content-Type', 'application/json')
+      .set('Origin', 'https://pryv.github.io')
       .send({
         username: username,
         password: PASSWORD,
