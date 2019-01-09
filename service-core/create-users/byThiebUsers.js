@@ -242,7 +242,7 @@ function computeResults() {
 }
 
 function writeStats() {
-  fs.writeFileSync(new Date().toISOString() + '-stats.json', JSON.stringify(stats));
+  fs.writeFileSync('results/' + new Date().toISOString() + '-stats.json', JSON.stringify(stats));
 }
 
 async function scenario(usersNbr, poolSize) {
