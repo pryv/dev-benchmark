@@ -1,4 +1,3 @@
-undefined
 bench125135-4
 bench125135-3
 bench125135-1
