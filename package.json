@@ -8,7 +8,7 @@
   "private": true,
   "dependencies": {
     "asyncawait": "^1.0.7",
-    "bluebird": "^3.5.1",
+    "bluebird": "^3.5.3",
     "csv-parse": "^3.0.0",
     "cuid": "^2.1.4",
     "hooks-engine": "git+ssh://git@github.com:pryv/hooks-engine.git#project/obpm-hooks",
@@ -17,6 +17,8 @@
     "nconf": "^0.10.0",
     "pad": "^2.2.1",
     "pryv": "^1.0.8",
-    "superagent": "^3.8.3"
+    "readline": "^1.3.0",
+    "socket.io-client": "9.9.x",
+    "superagent": "^4.1.0"
   }
 }

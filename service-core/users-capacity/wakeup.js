@@ -2,11 +2,16 @@ const request = require('superagent');
 const fs = require('fs');
 const readline = require('readline');
 const bluebird = require('bluebird');
+const socketIO = require('socket.io-client');
 
 const PASSWORD = 't3st-Z3r0';
-const URL_ENDPOINT = 'https://co3.pryv.li'
+const URL_ENDPOINT = 'http://l.rec.la:5000'
+function userUrl(user) { return 'http://' + user +'.rec.la:5000'; }
 
 const aa = fs.readFileSync('users.txt', { encoding: 'utf-8'});
+
+
+var userList = [];
 
 let users = aa.split('\n');
 users.pop()
@@ -44,7 +49,8 @@ const stats = {
 async function actionPerUser(user, idx) {
   try {
     const token = await login(user, idx);
-    await createStream(user, token, idx);
+   await attachSocket(user, token, idx);
+   await createStream(user, token, idx);
     await createEvent(user, token, idx);
   } catch (e) {
   }
@@ -55,6 +61,7 @@ async function login(username, idx) {
     try {
       const res = await request.post(URL_ENDPOINT + '/' + username + '/auth/login')
         .set('Content-Type', 'application/json')
+        .set('Origin', 'https://l.rec.la/')
         .send({
           username: username,
           password: PASSWORD,
@@ -105,4 +112,31 @@ async function createEvent(username, token, idx) {
     stats.events.fails++;
   }
 }
+
+async function attachSocket(username, token, idx) {
+	let promise = new Promise((resolve, reject) => {
+		var url = userUrl(username) + '/' + username +'?auth=' + token + '&resource=/' + username;
+
+		const socket = socketIO.connect(url);
+		// I expect this event to be triggered
+		socket.on('connect_error', function(error){
+				console.log('Connection Error ' + error );
+				socket.close();
+				reject(error);
+		});
+		
+		
+		socket.on('eventsChanged', function (from, msg) {
+						console.log('eventsChanged > ' + username);
+				 });
+		
+		socket.on('connect', function () {
+			console.log('socket connection ' + username);
+				resolve(socket);
+				
+			});
+ 		});
+ 		
+ }
+
 

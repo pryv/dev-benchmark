@@ -11,7 +11,7 @@ const CONCURRENCY = 5;
 const PASSWORD = 't3st-Z3r0';
 const PASSWORD_HASH = '$2a$10$t2GLJUNIDl34ru4V2adFv.aAabBgy7yC2FVJSjl0oazfP4O6H.7v2';
 
-const URL_ENDPOINT = 'https://co3.pryv.li';
+const URL_ENDPOINT = 'http://l.rec.la:5000';
 
 
 bluebird.resolve(scenario(NUM_USERS));
@@ -44,7 +44,7 @@ function createUser(prefix, idx) {
     const s = Date.now();
     request.post(URL_ENDPOINT + '/system/create-user')
       .set('Content-Type', 'application/json')
-      .set('Authorization', 'ZSBt6e5xash')
+      .set('Authorization', 'OVERRIDE ME')
       .send({
         username: username,
         passwordHash: PASSWORD_HASH,
