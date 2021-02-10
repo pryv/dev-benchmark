@@ -19,7 +19,7 @@ async function foo () {
   const stream = await streams.create(apiEndpoint);
   console.log(stream);
   console.log(pryv);
-  
+
   const results = { data: pryv.meta , runs: []};
 
   const body = JSON.stringify({type: 'note/txt', streamId: stream.id, content: 'Hello World'});
@@ -30,7 +30,7 @@ async function foo () {
     connections: 10, //default
     pipelining: 1, // default
     duration: 10, // default
-    workers: 4
+    workers: 1
   }));
   results.runs.push(await autocannon({
     title: 'events.get',
@@ -38,7 +38,7 @@ async function foo () {
     connections: 10, //default
     pipelining: 1, // default
     duration: 10, // default
-    workers: 4
+    workers: 1
   }));
   const d = new Date();
   const filename = d.toISOString().replace(/:/g,'-').replace(/\./g,'-') + '.json';
