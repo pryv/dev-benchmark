@@ -2,7 +2,9 @@ const superagent = require('superagent');
 const charlatan = require('charlatan');
 
 async function create(apiEndPoint, permissions) {
-  apiEndPoint = apiEndPoint || pryv.account.apiEndpoint;
+  if (pryv.account && pryv.account.apiEndpoint) {
+    apiEndPoint = apiEndPoint || pryv.account.apiEndpoint;
+  }
   permissions = permissions || [{streamId: '*', level: 'manage'}];
   try {
     const data = {

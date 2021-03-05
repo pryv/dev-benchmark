@@ -5,7 +5,7 @@ async function create() {
   try {
     const data = {
       "appid": "default",
-      "username": charlatan.Internet.userName().replace('_','-'),
+      "username": charlatan.Lorem.characters(7),
       "password": charlatan.Internet.password(),
       "email": charlatan.Internet.email(),
       "invitationtoken": "o3in4o2",

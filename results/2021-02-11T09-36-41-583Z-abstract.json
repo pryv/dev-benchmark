@@ -1,0 +1,22 @@
+{
+  "defaults": {
+    "connections": 1,
+    "pipelining": 1,
+    "duration": 2,
+    "workers": 1
+  },
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 9944
+    },
+    {
+      "title": "events.create",
+      "rate": 78
+    },
+    {
+      "title": "events.get",
+      "rate": 95
+    }
+  ]
+}
