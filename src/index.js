@@ -1,4 +1,5 @@
 const launchApiServer = require('./launch-api-server');
+const launchHelloWorld = require('./launch-hello-world');
 const globals = require('./globals');
 const accounts = require('./accounts');
 const accesses = require('./accesses');
@@ -39,17 +40,19 @@ async function go(config, defaults) {
     results.runs.push(res);
     abstract.runs.push({
       title: settings.title,
-      rate: Math.round(res.requests.sent / res.duration)
+      rate: Math.round(res.requests.sent / res.duration),
+      errors: res.errors
     })
 
     // let existing call end
     await new Promise(r => setTimeout(r, 1000));
   }
-
+  const hwServer = await launchHelloWorld.go();
   await runs({
     title: 'helloWorld',
     url: 'http://localhost:8080/'
   });
+  await hwServer.kill();
 
   await runs({
     title: 'events.create',
@@ -62,6 +65,12 @@ async function go(config, defaults) {
     url: apiEndpoint + 'events?limit=100',
   });
 
+  await runs({
+    title: 'streams.create',
+    url: apiEndpoint + 'streams',
+    body: JSON.stringify({ name: '[<id>]' })
+  });
+
   
 
   
@@ -69,22 +78,23 @@ async function go(config, defaults) {
   //fs.writeFileSync('results/' + baseFileName + '-abstract.json', JSON.stringify(abstract, null, 2));
   console.log(abstract);
   await server.kill();
-  return abstract;
+  return { abstract: abstract, results: results};
 }
 
 
 
 async function explore () {
-  let csvRes = 'connections,pipelining,duration,workers,HelloWorld,EventsCreate,EventsGet';
+  let csvRes = 'connections,pipelining,duration,workers,HelloWorld,EventsCreate,EventsGet, STreamsCreate';
   for (let connections = 1; connections < 11; connections += 3) {
     for (let pipelining = 1; pipelining < 11; pipelining += 3) {
       for (let workers = 1; workers < 11; workers += 3) {
-        const res = await go({}, {
+        const fullres = await go({}, {
           connections: connections, //default
           pipelining: pipelining, // default
           duration: 10, // default
           workers: workers
         });
+        const res = fullres.abstract;
         csvRes += '\n' + Object.values(res.defaults).join(',') + ',';
         csvRes += res.runs.map(x => x.rate).join(',')
         console.log(workers, connections);
@@ -98,20 +108,25 @@ async function explore () {
 async function basic(name, config) {
   const res = await go(config, {
     connections: 10, 
-    pipelining: 4, 
-    duration: 2, 
+    pipelining: 1, 
+    duration: 1, 
     workers: 4
   });
-  fs.writeFileSync('results/' + baseFileName + '-' + name + '.json',  JSON.stringify(res,null,2));
+  fs.writeFileSync('results/' + baseFileName + '-' + name + '-full.json',  JSON.stringify(res.results,null,2));
+  fs.writeFileSync('results/' + baseFileName + '-' + name + '.json',  JSON.stringify(res.abstract,null,2));
 }
 
 (async () => {
+  
+  /**
   const configs = {
     'audit-storage-only': {audit: {storage: {active: false}}}, 
     'audit-syslog-only': {audit: {syslog: {active: false}}},
     'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
-    'audit-both': {}
-  };
+    'basic': {}
+  };*/
+  const configs = {'basic': {}};
+
   for (let name of Object.keys(configs)) {  
     await basic(name, configs[name]);
   }
