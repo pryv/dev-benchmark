@@ -109,7 +109,7 @@ async function basic(name, config) {
   const res = await go(config, {
     connections: 10, 
     pipelining: 1, 
-    duration: 1, 
+    duration: 10, 
     workers: 4
   });
   fs.writeFileSync('results/' + baseFileName + '-' + name + '-full.json',  JSON.stringify(res.results,null,2));
@@ -118,14 +118,14 @@ async function basic(name, config) {
 
 (async () => {
   
-  /**
+  
   const configs = {
     'audit-storage-only': {audit: {storage: {active: false}}}, 
     'audit-syslog-only': {audit: {syslog: {active: false}}},
     'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
     'basic': {}
-  };*/
-  const configs = {'basic': {}};
+  };
+  //const configs = {'basic': {}};
 
   for (let name of Object.keys(configs)) {  
     await basic(name, configs[name]);
