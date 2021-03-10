@@ -12,6 +12,7 @@
     "autocannon": "^7.0.3",
     "charlatan": "^1.1.0",
     "pryv": "^2.1.3",
-    "superagent": "^6.1.0"
+    "superagent": "^6.1.0",
+    "tree-kill": "^1.2.2"
   }
 }
