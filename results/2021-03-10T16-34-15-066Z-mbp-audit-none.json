@@ -1,0 +1,40 @@
+{
+  "config": {
+    "audit": {
+      "syslog": {
+        "active": false
+      },
+      "storage": {
+        "active": false
+      }
+    }
+  },
+  "defaults": {
+    "connections": 10,
+    "pipelining": 1,
+    "duration": 10,
+    "workers": 4
+  },
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 35040,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 150,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 160,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 405,
+      "errors": 0
+    }
+  ]
+}

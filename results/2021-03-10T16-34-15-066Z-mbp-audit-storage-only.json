@@ -1,0 +1,37 @@
+{
+  "config": {
+    "audit": {
+      "storage": {
+        "active": false
+      }
+    }
+  },
+  "defaults": {
+    "connections": 10,
+    "pipelining": 1,
+    "duration": 10,
+    "workers": 4
+  },
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 36149,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 149,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 147,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 357,
+      "errors": 0
+    }
+  ]
+}
