@@ -11,7 +11,7 @@ async function insertStreams(user, count) {
     const parentId =  i ? base+"b"+(i -1) : null ;
     streams.push(
       {
-        "name": base+"b"+1,
+        "name": base+"b"+i,
         "parentId" : null,
         "created" : 1614939523.951,
         "createdBy" : "cklw5anod000djfvnu1081g71",
