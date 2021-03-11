@@ -30,12 +30,13 @@ function configToParams(config) {
 }
 
 
-async function withConfig(config) {
+async function withConfig(config, shush) {
   const cwd = path.resolve(__dirname, PATH_API_SERVER);
   const strParams = configToParams(config);
-  console.log('Launching api Server with: ' + strParams);
+  if (! shush)
+    console.log('Launching api Server with: ' + strParams);
   const params = ['start'].concat(strParams);
-  const s = new Launcher(cwd, 'yarn', params, 'Startup sequence complete');
+  const s = new Launcher(cwd, 'yarn', params, 'Startup sequence complete', shush);
   await s.ready();
   console.log('Server Ready');
   return s;

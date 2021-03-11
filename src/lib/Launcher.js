@@ -8,9 +8,11 @@ class Launcher {
   waitForKill;
   isReady;
   isKilled;
+  speak;
 
-  constructor(cwd, command, params, readyLine) {
+  constructor(cwd, command, params, readyLine, shush) {
     let readyResolve;
+    this.speak = false;
     this.waitForReady = new Promise((resolve, reject) => {
       readyResolve = resolve;
     });
@@ -26,10 +28,10 @@ class Launcher {
     };
 
     this.server = spawn(command, params, options);
-    console.log('Launcher: ' + command + ' ' + params);
+    if (this.speak) console.log('Launcher: ' + command + ' ' + params);
 
     this.server.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
+      if (this.speak) console.log(`stdout: ${data}`);
       if (data.includes(readyLine) && ! this.isReady) {
         this.isReady = true;
         readyResolve();
@@ -41,7 +43,7 @@ class Launcher {
     });
 
     this.server.on('close', (code) => {
-      console.log(`child process closed with code ${code}`);
+      if (this.speak) console.log(`child process closed with code ${code}`);
     });
 
     this.server.on('error', (error) => {
@@ -51,7 +53,7 @@ class Launcher {
     this.server.on('exit', (code) => {
       this.isKilled = true;
       killedResolve();
-      console.log(`child process exited with code ${code}`);
+      if (this.speak) console.log(`child process exited with code ${code}`);
     });
   }
 
@@ -61,13 +63,14 @@ class Launcher {
   }
 
   async kill() {
-    console.log('Kill request');
+    if (this.speak) console.log('Kill request');
     if (this.isKilled) return true;
+    const speak = this.speak;
     kill(this.server.pid, function(err) {
-      console.log('Tree Kill done');
+      if (speak) console.log('Tree Kill done');
     });
     //this.server.kill();
-    console.log("Kill pid: "+ this.server.pid);
+    if (this.speak) console.log("Kill pid: "+ this.server.pid);
     await this.waitForKill;
   }
 
