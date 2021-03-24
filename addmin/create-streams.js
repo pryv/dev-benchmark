@@ -1,7 +1,7 @@
 
 const Pryv = require('pryv');
 
-const connection = new Pryv.Connection('https://cklwchmto0dtn2mqgplyaqi75@iliakebets.pryv.addmin.com/');
+const connection = new Pryv.Connection('https://ckmc47hw600052ms1arhh0rlo@iliakebets.pryv.addmin.com/');
 
 async function createStream(n) {
   const baseId = Math.round(Math.random()*100000000)+'';
