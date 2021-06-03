@@ -11,10 +11,12 @@ async function create(apiEndPoint, permissions) {
       name: charlatan.Name.name(),
       permissions: permissions
     };
+
     const res = await superagent.post(apiEndPoint + 'accesses').send(data);
     return res.body.access;
   } catch (e) {
-    console.log(e.response.text);
+    const msg = e.response ? e.response.text : e.message;
+    console.log( msg);
   }
 }
 

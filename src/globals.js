@@ -1,4 +1,5 @@
 const superagent = require('superagent');
+//const serviceInfo = 'https://reg.rec.la/service/info';
 const serviceInfo = 'http://127.0.0.1:3000/reg/service/info';
 const Pryv = require('pryv');
 

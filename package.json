@@ -9,6 +9,7 @@
   "author": "Pryv S.A.",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "async": "^3.2.0",
     "autocannon": "^7.0.3",
     "charlatan": "^1.1.0",
     "cuid": "^2.1.8",
