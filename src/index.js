@@ -1,5 +1,5 @@
-const launchApiServer = require('./launch-api-server');
-const launchHelloWorld = require('./launch-hello-world');
+const launchApiServer = require('./launchers/launch-api-server');
+const launchHelloWorld = require('./launchers/launch-hello-world');
 const globals = require('./globals');
 const accounts = require('./accounts');
 const accesses = require('./accesses');

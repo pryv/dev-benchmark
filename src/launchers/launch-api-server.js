@@ -1,8 +1,8 @@
 const path = require('path');
 
-const Launcher = require('./lib/Launcher');
+const Launcher = require('./Launcher');
 
-PATH_API_SERVER = '../../service-core/dist/components/api-server';
+PATH_API_SERVER = '../../../service-core/dist/components/api-server';
 
 function configToParams(config) {
   if (! config) return [];
@@ -36,20 +36,13 @@ async function withConfig(config, shush) {
   if (! shush)
     console.log('Launching api Server with: ' + strParams);
   const params = ['start'].concat(strParams);
+
   const s = new Launcher(cwd, 'yarn', params, 'Startup sequence complete', shush);
   await s.ready();
   console.log('Server Ready');
   return s;
 }
 
-
-if (false) {
-  (async () => {
-    const s = await withConfig();
-    await s.kill();
-    console.log('Server Killed');
-  })();
-}
 
 
 module.exports = {

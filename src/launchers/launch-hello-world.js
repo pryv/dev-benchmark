@@ -1,8 +1,8 @@
 const path = require('path');
 
-const Launcher = require('./lib/Launcher');
+const Launcher = require('./Launcher');
 
-PATH_HW = '../helloWorld';
+PATH_HW = './';
 
 
 async function go() {
