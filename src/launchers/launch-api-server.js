@@ -43,8 +43,6 @@ async function withConfig(config, shush) {
   return s;
 }
 
-
-
 module.exports = {
   withConfig: withConfig
 }

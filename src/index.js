@@ -1,5 +1,6 @@
 const launchApiServer = require('./launchers/launch-api-server');
 const launchHelloWorld = require('./launchers/launch-hello-world');
+const launchHelloMongo = require('./launchers/launch-hello-mongo');
 const globals = require('./lib/globals');
 const users = require('./lib/users');
 const accesses = require('./lib/accesses');
@@ -52,6 +53,18 @@ async function go(config, autocanonConfig) {
     url: 'http://localhost:8080/'
   });
   await hwServer.kill();
+
+  const hmServer = await launchHelloMongo.go();
+  await runs({
+    title: 'mongoGet20',
+    url: 'http://localhost:8080/'
+  });
+  await runs({
+    title: 'mongoCreate1',
+    url: 'http://localhost:8080/',
+    body: JSON.stringify({"streamIds":["weight"],"type":"mass/kg","content":90})
+  });
+  await hmServer.kill();
 
   await runs({
     title: 'events.create',

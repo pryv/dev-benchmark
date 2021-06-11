@@ -1,0 +1,26 @@
+{
+  "version": "1.7.0-rc10-78-g0ea7a8f8",
+  "config": {},
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 32526,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 131,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 141,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 104,
+      "errors": 0
+    }
+  ]
+}
