@@ -1,11 +1,11 @@
-const launchApiServer = require('./launch-api-server');
-const launchHelloWorld = require('./launch-hello-world');
-const globals = require('./globals');
-const accounts = require('./accounts');
-const accesses = require('./accesses');
-const streams = require('./streams');
+/**
+ * Fill an account 
+ */
+
+const launchApiServer = require('../src/launchers/launch-api-server');
+const globals = require('../src/lib/globals');
+const users = require('../src/lib/users');
 const os = require('os');
-const Pryv = require('pryv');
 const async = require('async');
 
 const fs = require('fs');
@@ -18,15 +18,9 @@ let fillTask = 0;
 async function fill(streamscount, eventscount) {
   const myid = fillTask++ + 0;
   
-  const account = await accounts.create();
-  /** 
-  pryv.account = account;
-  const access = await accesses.create();
-  pryv.access = access;
-  const apiEndpoint = await pryv.service.apiEndpointFor(pryv.account.username, pryv.access.token);
-  const connection = new Pryv.Connection(apiEndpoint);
-  */
-  const connection = await pryv.service.login(account.username, account.password, account.appId);
+  const account = await users.create();
+  console.log(account)
+  const connection = await pryv.service.login(account.username, account.password, account.appid);
   const apiCalls = [];
 
   // average events per streams 
@@ -57,8 +51,6 @@ async function fill(streamscount, eventscount) {
 
 (async () => {
  const server = await launchApiServer.withConfig({'basic': {}}, true);
-
-  
   async function myTask () {
     await fill(22, 30 * 30 * 2);
   }

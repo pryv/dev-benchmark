@@ -1,9 +1,9 @@
 const launchApiServer = require('./launchers/launch-api-server');
 const launchHelloWorld = require('./launchers/launch-hello-world');
-const globals = require('./globals');
-const accounts = require('./accounts');
-const accesses = require('./accesses');
-const streams = require('./streams');
+const globals = require('./lib/globals');
+const users = require('./lib/users');
+const accesses = require('./lib/accesses');
+const streams = require('./lib/streams');
 const os = require('os');
 
 const autocannon = require('autocannon');
@@ -18,21 +18,19 @@ const baseFileName = d.toISOString().replace(/:/g, '-').replace(/\./g, '-') + '-
 async function go(config, defaults) {
   const server = await launchApiServer.withConfig(config);
   await globals.init();
-  const account = await accounts.create();
-  pryv.account = account;
-  const access = await accesses.create();
-  pryv.access = access;
-  const apiEndpoint = await pryv.service.apiEndpointFor(pryv.account.username, pryv.access.token);
+  const user = await users.create();
+  const access = await accesses.create(user.apiEndpoint);
+  // eventually reconstruct apiEnpoint (for older API Versionss)
+  const apiEndpoint = access.apiEndpoint || await pryv.service.apiEndpointFor(user.username, access.token);
   const stream = await streams.create(apiEndpoint);
-  console.log(stream);
-  console.log(pryv);
-
-
-
+ 
   const results = { config: config, data: pryv.meta, runs: [] };
   const abstract = { config: config, defaults: defaults, runs: [] };
 
-
+  /**
+   * Run one of tests 
+   * @param {*} settings 
+   */
   async function runs(settings) {
     const params = Object.assign({}, defaults);
     Object.assign(params, settings);
@@ -47,6 +45,7 @@ async function go(config, defaults) {
     // let existing call end
     await new Promise(r => setTimeout(r, 1000));
   }
+
   const hwServer = await launchHelloWorld.go();
   await runs({
     title: 'helloWorld',
@@ -71,11 +70,6 @@ async function go(config, defaults) {
     body: JSON.stringify({ name: '[<id>]' })
   });
 
-  
-
-  
-  //fs.writeFileSync('results/' + baseFileName + '.json', JSON.stringify(results, null, 2));
-  //fs.writeFileSync('results/' + baseFileName + '-abstract.json', JSON.stringify(abstract, null, 2));
   console.log(abstract);
   await server.kill();
   return { abstract: abstract, results: results};
@@ -120,13 +114,12 @@ async function basic(name, config) {
   
   
   const configs = {
-    'audit-storage-only': {audit: {storage: {active: false}}}, 
-    'audit-syslog-only': {audit: {syslog: {active: false}}},
-    'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
+    //'audit-storage-only': {audit: {storage: {active: false}}}, 
+    //'audit-syslog-only': {audit: {syslog: {active: false}}},
+    //'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
     'basic': {}
   };
-  //const configs = {'basic': {}};
-
+  
   for (let name of Object.keys(configs)) {  
     await basic(name, configs[name]);
   }

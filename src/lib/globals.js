@@ -2,7 +2,7 @@
  * Set a Pryv lib-js instance "Global"
  */
 
-const config = require('../config.json');
+const config = require('../../config.json');
 const Pryv = require('pryv');
 
 async function init() {

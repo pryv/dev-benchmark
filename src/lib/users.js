@@ -1,6 +1,11 @@
 const superagent = require('superagent');
 const charlatan = require('charlatan');
+const config = require('../../config.json');
 
+/**
+ * Creates a user Accounts;
+ * @returns {apiEndpoint}
+ */
 async function create() {
   try {
     const data = {
@@ -13,8 +18,7 @@ async function create() {
       "referer": "hospital-A",
       "hosting": "pilot"
     };
-    const res = await superagent.post(pryv.register + 'user').send(data).set('Origin', 'http://l.rec.la');
-    //const res = await superagent.post('https://co1.rec.la/users').send(data).set('Origin', 'http://l.rec.la');
+    const res = await superagent.post(pryv.register + 'user').send(data).set('Origin', config.trustedAppOrigin);
     data.apiEndpoint = res.body.apiEndpoint;
     return data;
   } catch (e) {
@@ -24,5 +28,4 @@ async function create() {
 
 module.exports = {
   create: create,
-
 };
