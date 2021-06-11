@@ -15,7 +15,7 @@ const d = new Date();
 const baseFileName = d.toISOString().replace(/:/g, '-').replace(/\./g, '-') + '-' + os.hostname();
 
 // async/await
-async function go(config, defaults) {
+async function go(config, autocanonConfig) {
   const server = await launchApiServer.withConfig(config);
   await globals.init();
   const user = await users.create();
@@ -24,15 +24,15 @@ async function go(config, defaults) {
   const apiEndpoint = access.apiEndpoint || await pryv.service.apiEndpointFor(user.username, access.token);
   const stream = await streams.create(apiEndpoint);
  
-  const results = { config: config, data: pryv.meta, runs: [] };
-  const abstract = { config: config, defaults: defaults, runs: [] };
+  const results = { data: pryv.meta, config: config, defaults: autocanonConfig, runs: [] };
+  const abstract = { version: pryv.meta.apiVersion, config: config, runs: [] };
 
   /**
    * Run one of tests 
    * @param {*} settings 
    */
   async function runs(settings) {
-    const params = Object.assign({}, defaults);
+    const params = Object.assign({}, autocanonConfig);
     Object.assign(params, settings);
     const res = await autocannon(params)
     results.runs.push(res);
@@ -70,48 +70,18 @@ async function go(config, defaults) {
     body: JSON.stringify({ name: '[<id>]' })
   });
 
-  console.log(abstract);
   await server.kill();
   return { abstract: abstract, results: results};
 }
 
 
-
-async function explore () {
-  let csvRes = 'connections,pipelining,duration,workers,HelloWorld,EventsCreate,EventsGet, STreamsCreate';
-  for (let connections = 1; connections < 11; connections += 3) {
-    for (let pipelining = 1; pipelining < 11; pipelining += 3) {
-      for (let workers = 1; workers < 11; workers += 3) {
-        const fullres = await go({}, {
-          connections: connections, //default
-          pipelining: pipelining, // default
-          duration: 10, // default
-          workers: workers
-        });
-        const res = fullres.abstract;
-        csvRes += '\n' + Object.values(res.defaults).join(',') + ',';
-        csvRes += res.runs.map(x => x.rate).join(',')
-        console.log(workers, connections);
-      }
-    }
-  }
-  fs.writeFileSync('results/' + baseFileName + '-exploration.csv', csvRes);
-};
-
-
-async function basic(name, config) {
-  const res = await go(config, {
+(async () => {
+  const autocanonConfig = {
     connections: 10, 
     pipelining: 1, 
     duration: 10, 
     workers: 4
-  });
-  fs.writeFileSync('results/' + baseFileName + '-' + name + '-full.json',  JSON.stringify(res.results,null,2));
-  fs.writeFileSync('results/' + baseFileName + '-' + name + '.json',  JSON.stringify(res.abstract,null,2));
-}
-
-(async () => {
-  
+  }
   
   const configs = {
     //'audit-storage-only': {audit: {storage: {active: false}}}, 
@@ -121,7 +91,18 @@ async function basic(name, config) {
   };
   
   for (let name of Object.keys(configs)) {  
-    await basic(name, configs[name]);
+    const res = await go(configs[name], autocanonConfig);
+    fs.writeFileSync('results/' + baseFileName + '-' + name + '-full.json',  JSON.stringify(res.results,null,2));
+    fs.writeFileSync('results/' + baseFileName + '-' + name + '.json',  JSON.stringify(res.abstract,null,2));
+
+    let output = name + ':>> ';
+    let errors = [];
+    for (const run of res.abstract.runs) {
+      output += run.title + ': ' + run.rate;
+      if (run.errors) output += ' with ' + run.errors + ' errors |';
+      output += '  ';
+    }
+    console.log(output);
   }
   process.exit(0);
 })();
