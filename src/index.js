@@ -6,6 +6,7 @@ const users = require('./lib/users');
 const accesses = require('./lib/accesses');
 const streams = require('./lib/streams');
 const os = require('os');
+const mkdirp = require('mkdirp');
 
 const autocannon = require('autocannon');
 const Pryv = require('pryv');
@@ -14,6 +15,8 @@ const fs = require('fs');
 
 const d = new Date();
 const baseFileName = d.toISOString().replace(/:/g, '-').replace(/\./g, '-') + '-' + os.hostname();
+
+const TEST_SUITE_NAME = 'v1';
 
 // async/await
 async function go(config, autocanonConfig) {
@@ -47,6 +50,10 @@ async function go(config, autocanonConfig) {
     await new Promise(r => setTimeout(r, 1000));
   }
 
+  //--------- HERE COMES THE TEST - SUITE -----------//
+  //--------- IF CHANGED ALSO CHANGE ITS NAME IN THE HEADERS -------//
+
+  //-------------- Hello World ---------//
   const hwServer = await launchHelloWorld.go();
   await runs({
     title: 'helloWorld',
@@ -54,6 +61,7 @@ async function go(config, autocanonConfig) {
   });
   await hwServer.kill();
 
+  //-------------- Hello Mongo ---------//
   const hmServer = await launchHelloMongo.go();
   await runs({
     title: 'mongoGet20',
@@ -66,6 +74,7 @@ async function go(config, autocanonConfig) {
   });
   await hmServer.kill();
 
+  //-------------- Service Core ---------//
   await runs({
     title: 'events.create',
     url: apiEndpoint + 'events',
@@ -102,11 +111,13 @@ async function go(config, autocanonConfig) {
     //'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
     'basic': {}
   };
-  
+  const resultPath = 'results/' + TEST_SUITE_NAME;
+  await mkdirp(resultPath);
+
   for (let name of Object.keys(configs)) {  
-    const res = await go(configs[name], autocanonConfig);
-    fs.writeFileSync('results/' + baseFileName + '-' + name + '-full.json',  JSON.stringify(res.results,null,2));
-    fs.writeFileSync('results/' + baseFileName + '-' + name + '.json',  JSON.stringify(res.abstract,null,2));
+    const res = await go(configs[name], autocanonConfig);  
+    fs.writeFileSync(resultPath + '/' + baseFileName + '-' + name + '-full.json',  JSON.stringify(res.results,null,2));
+    fs.writeFileSync(resultPath + '/' + baseFileName + '-' + name + '.json',  JSON.stringify(res.abstract,null,2));
 
     let output = name + ':>> ';
     let errors = [];

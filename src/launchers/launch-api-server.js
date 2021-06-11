@@ -1,8 +1,8 @@
 const path = require('path');
-
 const Launcher = require('./Launcher');
+const config = require('../../config.json');
 
-PATH_API_SERVER = '../../../service-core/dist/components/api-server';
+PATH_API_SERVER = '../../' + config.serviceCorePath+ '/dist/components/api-server';
 
 function configToParams(config) {
   if (! config) return [];

@@ -1,0 +1,36 @@
+{
+  "version": "1.7.0-rc10-79-g4f0da591",
+  "config": {},
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 31388,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet20",
+      "rate": 2492,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 2711,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 133,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 147,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 104,
+      "errors": 0
+    }
+  ]
+}

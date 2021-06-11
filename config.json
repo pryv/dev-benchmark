@@ -1,5 +1,6 @@
 {
   "serviceInfo": "http://127.0.0.1:3000/reg/service/info",
   "mongoURI": "mongodb://localhost:27017/pryv-node?retryWrites=true&w=majority&useUnifiedTopology=true",
-  "trustedAppOrigin": "http://l.rec.la"
+  "trustedAppOrigin": "http://l.rec.la",
+  "serviceCorePath": "../service-core"
 }
