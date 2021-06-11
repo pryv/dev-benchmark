@@ -3,6 +3,10 @@ const Pryv = require('pryv');
 
 const connection = new Pryv.Connection('https://ckmc47hw600052ms1arhh0rlo@iliakebets.pryv.addmin.com/');
 
+/**
+ * Create 'n' streams in a sucession of parents and child
+ * @param {*} n 
+ */
 async function createStream(n) {
   const baseId = Math.round(Math.random()*100000000)+'';
 
@@ -19,7 +23,6 @@ async function createStream(n) {
   const msg = 'Created ' + n + ' streams in';
   console.time(msg);
   const result = await connection.api(apiCalls);
-  //console.log(result);
   console.timeEnd(msg);
 }
 

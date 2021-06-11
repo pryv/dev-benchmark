@@ -1,10 +1,12 @@
-const superagent = require('superagent');
-//const serviceInfo = 'https://reg.rec.la/service/info';
-const serviceInfo = 'http://127.0.0.1:3000/reg/service/info';
+/**
+ * Set a Pryv lib-js instance "Global"
+ */
+
+const config = require('../config.json');
 const Pryv = require('pryv');
 
 async function init() {
-  const service = new Pryv.Service(serviceInfo);
+  const service = new Pryv.Service(config.serviceInfo);
   const pryv = await service.info();
   pryv.service = service;
   Object.assign(global, {pryv: pryv});

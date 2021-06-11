@@ -1,9 +1,15 @@
 const {MongoClient} = require('mongodb');
-const uri = "mongodb://localhost:27017/pryv-node?retryWrites=true&w=majority&useUnifiedTopology=true";
-const client = new MongoClient(uri);
+const config = require('../config.json');
+
+const client = new MongoClient(config.mongoURI);
 
 let db;
 
+/**
+ * Create "N" streams on Mongo in a sucession of parents and childs
+ * @param {*} user 
+ * @param {*} count 
+ */
 async function insertStreams(user, count) {
   const streams = [];
   for (let i = 0; i < count; i++) {
