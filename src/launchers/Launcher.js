@@ -72,7 +72,7 @@ class Launcher {
     const speak = this.speak;
     kill(this.server.pid,'SIGINT', function(err) {
       this.log('Tree Kill done');
-    });
+    }.bind(this));
     //this.server.kill();
     this.log('Kill pid: '+ this.server.pid);
     await this.waitForKill;

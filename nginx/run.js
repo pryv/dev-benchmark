@@ -14,9 +14,9 @@ async function launchServers(n) {
   }
 }
 
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
   console.log('Closing ALL');
-  ( async () => {
+  (async () => {
     for (const server of servers) {
       await server.kill();
     }
@@ -24,26 +24,35 @@ process.on('SIGINT', function() {
   });
 });
 
-async function fire(n) {
-  const NUMBER_OF_USERS = 50;
+function fire(n) {
+  const NUMBER_OF_USERS = 20;
   const urls = [];
+
   for (let i = 0; i < NUMBER_OF_USERS; i++) {
-    const port = startingPort + i % 3 + 1;
-    urls.push('http://toto' + i+ '.rec.la:' + port);
+    const url = 'http://toto' + i + '.rec.la:' + startingPort;
+    urls.push(url);
   }
-  console.log(urls);
   const instance = autocannon({
     url: urls,
     connections: 200, //default
     pipelining: 1, // default
     duration: 10, // default
-    workers: 10
-  })
+    workers: 5
+  });
+  autocannon.track(instance, { renderProgressBar: false })
+};
+
+async function killLastServer() {
+  console.log('Kill one');
+  const s = servers.pop();
+  await s.kill();
 }
 
 let x = null;
 (async () => {
   await launchServers(3);
+
   fire();
+  //setTimeout(killLastServer, 5000); // kill one server after 5 s
   console.log('passed');
 })();

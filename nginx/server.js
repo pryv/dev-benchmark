@@ -8,11 +8,13 @@ const hosts = {};
 
 //create a server object:
 http.createServer(function (req, res) {
-  res.write('Hello World!'); //write a response to the client
-  res.end(); //end the response
   const host = req.headers.host;
   if (! hosts[host]) hosts[host] = 0;
   hosts[host]++;
+  setTimeout(function() {
+    res.write('Hello World!'); //write a response to the client
+    res.end(); //end the response
+  }, 2000 * Math.random());
 }).listen(port); //the server object listens on port 8080
 
 
