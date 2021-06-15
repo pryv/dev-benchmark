@@ -10,9 +10,9 @@ class Launcher {
   isKilled;
   speak;
 
-  constructor(cwd, command, params, readyLine, shush) {
+  constructor(cwd, command, params, readyLine, speak) {
     let readyResolve;
-    this.speak = false;
+    this.speak = speak || false;
     this.waitForReady = new Promise((resolve, reject) => {
       readyResolve = resolve;
     });
@@ -28,10 +28,10 @@ class Launcher {
     };
 
     this.server = spawn(command, params, options);
-    if (this.speak) console.log('Launcher: ' + command + ' ' + params);
+    this.log('Launcher: ' + command + ' ' + params);
 
     this.server.stdout.on('data', (data) => {
-      if (this.speak) console.log(`stdout: ${data}`);
+      this.log(`stdout: ${data}`);
       if (data.includes(readyLine) && ! this.isReady) {
         this.isReady = true;
         readyResolve();
@@ -43,7 +43,7 @@ class Launcher {
     });
 
     this.server.on('close', (code) => {
-      if (this.speak) console.log(`child process closed with code ${code}`);
+      this.log(`child process closed with code ${code}`);
     });
 
     this.server.on('error', (error) => {
@@ -53,8 +53,12 @@ class Launcher {
     this.server.on('exit', (code) => {
       this.isKilled = true;
       killedResolve();
-      if (this.speak) console.log(`child process exited with code ${code}`);
+      this.log(`child process exited with code ${code}`);
     });
+  }
+
+  log(str) {
+    if (this.speak) console.log(`Launcher [${this.speak}]: ${str}`);
   }
 
   async ready() {
@@ -63,14 +67,14 @@ class Launcher {
   }
 
   async kill() {
-    if (this.speak) console.log('Kill request');
+    this.log('Kill request');
     if (this.isKilled) return true;
     const speak = this.speak;
-    kill(this.server.pid, function(err) {
-      if (speak) console.log('Tree Kill done');
+    kill(this.server.pid,'SIGINT', function(err) {
+      this.log('Tree Kill done');
     });
     //this.server.kill();
-    if (this.speak) console.log("Kill pid: "+ this.server.pid);
+    this.log('Kill pid: '+ this.server.pid);
     await this.waitForKill;
   }
 
