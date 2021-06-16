@@ -7,6 +7,7 @@ const accesses = require('./lib/accesses');
 const streams = require('./lib/streams');
 const os = require('os');
 const mkdirp = require('mkdirp');
+const path = require('path');
 
 const autocannon = require('autocannon');
 const Pryv = require('pryv');
@@ -36,13 +37,13 @@ async function go(config, autocanonConfig) {
    * @param {*} settings 
    */
   async function runs(settings) {
-    const params = Object.assign({}, autocanonConfig);
+    const params = Object.assign({headers: {'Content-Type': 'application/json'}}, autocanonConfig);
     Object.assign(params, settings);
     const res = await autocannon(params)
     results.runs.push(res);
     abstract.runs.push({
       title: settings.title,
-      rate: Math.round(res.requests.sent / res.duration),
+      rate: res.requests.average,
       errors: res.errors
     })
 
@@ -78,18 +79,55 @@ async function go(config, autocanonConfig) {
   await runs({
     title: 'events.create',
     url: apiEndpoint + 'events',
-    body: JSON.stringify({ type: 'note/txt', streamId: stream.id, content: 'Hello World' })
+    method: 'POST',
+    body: JSON.stringify({ type: 'note/txt', streamId: stream.id, content: 'Hello World' }),
+    //requests: [{setupRequest: path.resolve(__dirname, './lib/setup-request/to-console.js'), onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
   });
 
   await runs({
     title: 'events.get',
     url: apiEndpoint + 'events?limit=100',
+    //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
   });
 
   await runs({
     title: 'streams.create',
     url: apiEndpoint + 'streams',
-    body: JSON.stringify({ name: '[<id>]' })
+    method: 'POST',
+    body: JSON.stringify({ name: '[<id>]' }),
+    idReplacement: true,
+    //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
+  });
+
+  const batchStreams = [];
+  let parentId = null;
+  for (let i = 0; i < 10; i++) {
+    const id = i + 'aaaa[<id>]';
+    batchStreams.push({method: 'streams.create', params: {id: id, name: id, parentId : parentId}});
+    parentId = id;
+  }
+  await runs({
+    title: 'batch streams.create',
+    url: apiEndpoint,
+    method: 'POST',
+    body: JSON.stringify(batchStreams),
+    requests: [{
+      setupRequest: path.resolve(__dirname, './lib/setup-request/batch-streams.create.js'), 
+      //onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')
+    }],
+  });
+
+
+  const batchEvents = [];
+  for (let i = 0; i < 10; i++) {
+    batchEvents.push({method: 'events.create', params: { type: 'note/txt', streamId: stream.id, content: 'Hello World' }});
+  }
+  await runs({
+    title: 'batch events.create',
+    url: apiEndpoint ,
+    method: 'POST',
+    body: JSON.stringify(batchEvents),
+    //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
   });
 
   await server.kill();
