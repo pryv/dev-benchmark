@@ -1,0 +1,47 @@
+{
+  "version": "1.7.0-rc10-128-g6331a277",
+  "comment": "Caching accesses",
+  "config": {},
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 25928,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet20",
+      "rate": 2274.9,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 2206.4,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 254,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 149,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 286.11,
+      "errors": 0
+    },
+    {
+      "title": "batch streams.create",
+      "rate": 1.6,
+      "errors": 0
+    },
+    {
+      "title": "batch events.create",
+      "rate": 3.2,
+      "errors": 0
+    }
+  ]
+}

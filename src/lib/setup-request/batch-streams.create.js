@@ -1,6 +1,5 @@
 module.exports = function(request, context) {
   const idx = Math.round(Math.random()*10000000000000);
-  console.log(idx);
   request.body = request.body.replaceAll('[<id>]', idx);
   return request;
 }

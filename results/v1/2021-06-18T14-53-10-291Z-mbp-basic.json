@@ -1,0 +1,47 @@
+{
+  "version": "1.7.0-rc10-127-g8c0d8b8f",
+  "comment": "dumb stream caching",
+  "config": {},
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 28125.82,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet20",
+      "rate": 2306.31,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 2155.9,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 225.8,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 145.6,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 257.2,
+      "errors": 0
+    },
+    {
+      "title": "batch streams.create",
+      "rate": 1.6,
+      "errors": 0
+    },
+    {
+      "title": "batch events.create",
+      "rate": 4.8,
+      "errors": 0
+    }
+  ]
+}
