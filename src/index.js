@@ -17,17 +17,23 @@ const fs = require('fs');
 const d = new Date();
 const baseFileName = d.toISOString().replace(/:/g, '-').replace(/\./g, '-') + '-' + os.hostname();
 
-const TEST_SUITE_NAME = 'v1';
+const TEST_SUITE_NAME = 'v2';
 
 // async/await
 async function go(config, autocanonConfig) {
   const server = await launchApiServer.withConfig(config);
   await globals.init();
-  const user = await users.create();
-  const access = await accesses.create(user.apiEndpoint);
-  // eventually reconstruct apiEnpoint (for older API Versionss)
-  const apiEndpoint = access.apiEndpoint || await pryv.service.apiEndpointFor(user.username, access.token);
-  const stream = await streams.create(apiEndpoint);
+
+  let user, access, apiEndpoint, stream;
+
+  async function resetUser() {
+    user = await users.create();
+    access = await accesses.create(user.apiEndpoint);
+    // eventually reconstruct apiEnpoint (for older API Versionss)
+    apiEndpoint = access.apiEndpoint || await pryv.service.apiEndpointFor(user.username, access.token);
+    stream = await streams.create(apiEndpoint);
+  }
+
  
   const results = { data: pryv.meta, config: config, defaults: autocanonConfig, runs: [] };
   const abstract = { version: pryv.meta.apiVersion, config: config, runs: [] };
@@ -76,6 +82,7 @@ async function go(config, autocanonConfig) {
   await hmServer.kill();
 
   //-------------- Service Core ---------//
+  await resetUser();
   await runs({
     title: 'events.create',
     url: apiEndpoint + 'events',
@@ -90,6 +97,7 @@ async function go(config, autocanonConfig) {
     //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
   });
 
+  await resetUser();
   await runs({
     title: 'streams.create',
     url: apiEndpoint + 'streams',
@@ -99,6 +107,7 @@ async function go(config, autocanonConfig) {
     //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
   });
 
+  await resetUser();
   const batchStreams = [];
   let parentId = null;
   for (let i = 0; i < 10; i++) {
@@ -117,7 +126,7 @@ async function go(config, autocanonConfig) {
     }],
   });
 
-
+  await resetUser();
   const batchEvents = [];
   for (let i = 0; i < 10; i++) {
     batchEvents.push({method: 'events.create', params: { type: 'note/txt', streamId: stream.id, content: 'Hello World' }});

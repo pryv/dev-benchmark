@@ -1,0 +1,47 @@
+{
+  "version": "1.7.0-rc10-129-g1b3e5527",
+  "config": {},
+  "comment": "Cache Access/Streams/Account"
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 26729.6,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet20",
+      "rate": 2310.5,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 2126.31,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 257.9,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 149.4,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 293.3,
+      "errors": 0
+    },
+    {
+      "title": "batch streams.create",
+      "rate": 8.81,
+      "errors": 0
+    },
+    {
+      "title": "batch events.create",
+      "rate": 33.8,
+      "errors": 0
+    }
+  ]
+}
