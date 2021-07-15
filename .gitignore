@@ -3,3 +3,4 @@ node_modules
 nginx/temp
 nginx/nginx-bin
 nginx/result-*
+sqlite/testDB*

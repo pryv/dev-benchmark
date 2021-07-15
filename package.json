@@ -12,6 +12,7 @@
   "dependencies": {
     "async": "^3.2.0",
     "autocannon": "^7.0.3",
+    "better-sqlite3": "^7.4.1",
     "charlatan": "^1.1.0",
     "cuid": "^2.1.8",
     "express": "^4.17.1",
