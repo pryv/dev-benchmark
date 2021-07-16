@@ -19,8 +19,9 @@ const name = process.argv[2] || Math.random();
 console.log('Ready', name);
 setTimeout(go, 1);
 
-
+let startTime;
 function go() {
+  startTime = Date.now();
   console.log('Go', name);
   for (let i = 0; i < 10000; i++) {
     write(i)();
@@ -78,7 +79,8 @@ process.on('exit', function () {
   console.log('Closing',name, 
   'busyCount:', busyCount, 
   'recovered', recoveredCount, 
-  'revoryMax retry', recoveryMax,
+  'recoveryMax retry', recoveryMax,
   'failedCount', failedCount, 
-  'maxTime (ms)', maxTime);
+  'maxTime (ms)', maxTime,
+  'processTime (ms)', Date.now() - startTime);
 });
