@@ -49,14 +49,14 @@ function write(n) {
       lines.push({ line: 'Joey' });
     }
 
-    execWriteStatement(() => { insertMany(lines) }, 10000);
+     await execWriteStatement(() => { insertMany(lines) }, 10000);
    
     const tt = Date.now() - time;
     if (tt > maxTime) maxTime = tt;
   }
 }
 
-function execWriteStatement(statement, retries) {
+ async function execWriteStatement(statement, retries) {
   for (let i = 0; i < retries; i++) {
     try {
       statement();
@@ -65,6 +65,7 @@ function execWriteStatement(statement, retries) {
       return; // close loop and return
     } catch (err) {
       if (err.code === 'SQLITE_BUSY') {
+        await new Promise((r) => setTimeout(r, 1));
         busyCount++
       } else {
         throw err;
