@@ -27,8 +27,9 @@ class Launcher {
       detached: false
     };
 
-    this.server = spawn(command, params, options);
     this.log('Launcher: ' + command + ' ' + params);
+    this.server = spawn(command, params, options);
+    
 
     this.server.stdout.on('data', (data) => {
       this.log(`stdout: ${data}`);

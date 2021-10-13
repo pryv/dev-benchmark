@@ -21,7 +21,7 @@ const TEST_SUITE_NAME = 'v2';
 
 // async/await
 async function go(config, autocanonConfig) {
-  const server = await launchApiServer.withConfig(config);
+  const server = await launchApiServer.withConfig(config, true);
   await globals.init();
 
   let user, access, apiEndpoint, stream;
