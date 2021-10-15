@@ -18,6 +18,7 @@ const d = new Date();
 const baseFileName = d.toISOString().replace(/:/g, '-').replace(/\./g, '-') + '-' + os.hostname();
 
 const TEST_SUITE_NAME = 'v2';
+const PAUSE_BETWEEN_RUNS = 5 ; // in seconds
 
 // async/await
 async function go(config, autocanonConfig) {
@@ -32,6 +33,7 @@ async function go(config, autocanonConfig) {
     // eventually reconstruct apiEnpoint (for older API Versionss)
     apiEndpoint = access.apiEndpoint || await pryv.service.apiEndpointFor(user.username, access.token);
     stream = await streams.create(apiEndpoint);
+    await new Promise(r => setTimeout(r, PAUSE_BETWEEN_RUNS * 1000));
   }
 
  
@@ -176,6 +178,7 @@ async function go(config, autocanonConfig) {
   for (let name of Object.keys(configs)) {  
     const config = Object.assign(configs[name], defaults);
     const res = await go(config, autocanonConfig);  
+    await new Promise(r => setTimeout(r, PAUSE_BETWEEN_RUNS * 1000));
     fs.writeFileSync(resultPath + '/' + baseFileName + '-' + name + '-full.json',  JSON.stringify(res.results,null,2));
     fs.writeFileSync(resultPath + '/' + baseFileName + '-' + name + '.json',  JSON.stringify(res.abstract,null,2));
 

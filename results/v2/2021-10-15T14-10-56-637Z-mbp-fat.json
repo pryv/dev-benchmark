@@ -1,0 +1,66 @@
+{
+  "version": "1.7.0-rc29-17-g876870ec",
+  "config": {
+    "audit": {
+      "syslog": {
+        "active": true
+      },
+      "storage": {
+        "active": true
+      }
+    },
+    "integrity": {
+      "isActive": true
+    },
+    "caching": {
+      "isActive": false,
+      "localStreams": false,
+      "accesses": false
+    },
+    "trace": {
+      "enable": false
+    }
+  },
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 26735.28,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet20",
+      "rate": 2075.31,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 1939.3,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 158,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 125.8,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 234.4,
+      "errors": 0
+    },
+    {
+      "title": "batch streams.create",
+      "rate": 4.8,
+      "errors": 0
+    },
+    {
+      "title": "batch events.create",
+      "rate": 26.9,
+      "errors": 0
+    }
+  ]
+}
