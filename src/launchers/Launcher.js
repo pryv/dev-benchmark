@@ -27,7 +27,7 @@ class Launcher {
       detached: false
     };
 
-    this.log('Launcher: ' + command + ' ' + params);
+    this.log('Launcher: ' + command + ' ' + params.join(' '));
     this.server = spawn(command, params, options);
     
 
@@ -59,7 +59,7 @@ class Launcher {
   }
 
   log(str) {
-    if (this.speak) console.log(`Launcher [${this.speak}]: ${str}`);
+    if (this.speak || str.includes('err')) console.log(`Launcher [${this.speak}]: ${str}`);
   }
 
   async ready() {

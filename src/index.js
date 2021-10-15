@@ -21,7 +21,7 @@ const TEST_SUITE_NAME = 'v2';
 
 // async/await
 async function go(config, autocanonConfig) {
-  const server = await launchApiServer.withConfig(config, true);
+  const server = await launchApiServer.withConfig(config, false);
   await globals.init();
 
   let user, access, apiEndpoint, stream;
@@ -152,17 +152,30 @@ async function go(config, autocanonConfig) {
     workers: 4
   }
   
+  const defaults = { trace: { enable: false }};
+
   const configs = {
     //'audit-storage-only': {audit: {storage: {active: false}}}, 
     //'audit-syslog-only': {audit: {syslog: {active: false}}},
     //'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
+    'light': {
+      audit: {syslog: {active: false}, storage: {active: false}},
+      integrity: { isActive: false},
+      caching: {isActive: true, localStreams: true, accesses: true}
+    },
+    'fat': {
+      audit: {syslog: {active: true}, storage: {active: true}},
+      integrity: { isActive: true},
+      caching: {isActive: false, localStreams: false, accesses: false}
+    },
     'basic': {}
   };
   const resultPath = 'results/' + TEST_SUITE_NAME;
   await mkdirp(resultPath);
 
   for (let name of Object.keys(configs)) {  
-    const res = await go(configs[name], autocanonConfig);  
+    const config = Object.assign(configs[name], defaults);
+    const res = await go(config, autocanonConfig);  
     fs.writeFileSync(resultPath + '/' + baseFileName + '-' + name + '-full.json',  JSON.stringify(res.results,null,2));
     fs.writeFileSync(resultPath + '/' + baseFileName + '-' + name + '.json',  JSON.stringify(res.abstract,null,2));
 
