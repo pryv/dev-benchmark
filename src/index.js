@@ -5,20 +5,15 @@ const globals = require('./lib/globals');
 const users = require('./lib/users');
 const accesses = require('./lib/accesses');
 const streams = require('./lib/streams');
-const os = require('os');
-const mkdirp = require('mkdirp');
+const resultTools = require('./lib/resultTools');
+
 const path = require('path');
 
 const autocannon = require('autocannon');
 const Pryv = require('pryv');
 
-const fs = require('fs');
-
-const d = new Date();
-const baseFileName = d.toISOString().replace(/:/g, '-').replace(/\./g, '-') + '-' + os.hostname();
-
 const TEST_SUITE_NAME = 'v2';
-const PAUSE_BETWEEN_RUNS = 5 ; // in seconds
+const PAUSE_BETWEEN_RUNS = 2 ; // in seconds
 
 // async/await
 async function go(config, autocanonConfig) {
@@ -33,9 +28,7 @@ async function go(config, autocanonConfig) {
     // eventually reconstruct apiEnpoint (for older API Versionss)
     apiEndpoint = access.apiEndpoint || await pryv.service.apiEndpointFor(user.username, access.token);
     stream = await streams.create(apiEndpoint);
-    await new Promise(r => setTimeout(r, PAUSE_BETWEEN_RUNS * 1000));
   }
-
  
   const results = { data: pryv.meta, config: config, defaults: autocanonConfig, runs: [] };
   const abstract = { version: pryv.meta.apiVersion, config: config, runs: [] };
@@ -56,7 +49,7 @@ async function go(config, autocanonConfig) {
     })
 
     // let existing call end
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, PAUSE_BETWEEN_RUNS * 1000));
   }
 
   //--------- HERE COMES THE TEST - SUITE -----------//
@@ -150,7 +143,7 @@ async function go(config, autocanonConfig) {
   const autocanonConfig = {
     connections: 10, 
     pipelining: 1, 
-    duration: 10, 
+    duration: 1, 
     workers: 4
   }
   
@@ -176,24 +169,14 @@ async function go(config, autocanonConfig) {
     },
     'basic': {}
   };
-  const resultPath = 'results/' + TEST_SUITE_NAME;
-  await mkdirp(resultPath);
+  
 
   for (let name of Object.keys(configs)) {  
     const config = Object.assign(configs[name], defaults);
     const res = await go(config, autocanonConfig);  
-    await new Promise(r => setTimeout(r, PAUSE_BETWEEN_RUNS * 1000));
-    fs.writeFileSync(resultPath + '/' + baseFileName + '-' + name + '-full.json',  JSON.stringify(res.results,null,2));
-    fs.writeFileSync(resultPath + '/' + baseFileName + '-' + name + '.json',  JSON.stringify(res.abstract,null,2));
 
-    let output = name + ':>> ';
-    let errors = [];
-    for (const run of res.abstract.runs) {
-      output += run.title + ': ' + run.rate;
-      if (run.errors) output += ' with ' + run.errors + ' errors |';
-      output += '  ';
-    }
-    console.log(output);
+    await resultTools.save(TEST_SUITE_NAME, name , res);
+    resultTools.show(name, res);
   }
   process.exit(0);
 })();
