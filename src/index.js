@@ -161,6 +161,10 @@ async function go(config, autocanonConfig) {
     //'audit-syslog-only': {audit: {syslog: {active: false}}},
     //'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
     'light': {
+      backwardCombackwardCompatibility: {
+        systemStreams: {prefix: {isActive: false}},
+        tags: {isActive: false} 
+      },
       audit: {syslog: {active: false}, storage: {active: false}},
       integrity: { isActive: false},
       caching: {isActive: true, localStreams: true, accesses: true}
