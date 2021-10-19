@@ -15,8 +15,14 @@ const Pryv = require('pryv');
 const TEST_SUITE_NAME = 'v2';
 const PAUSE_BETWEEN_RUNS = 2 ; // in seconds
 
+// keys for runs 
+const R = { MONGO: 'mongo', HELLO: 'hello', EVENTS: 'events', STREAMS: 'streams', BATCH_EVENTS: 'b_events', BATCH_STREAMS: 'b_streams'};
+
 // async/await
 async function go(config, autocanonConfig) {
+  const todos = config.do;
+  delete config.do;
+
   const server = await launchApiServer.withConfig(config, false);
   await globals.init();
 
@@ -38,6 +44,7 @@ async function go(config, autocanonConfig) {
    * @param {*} settings 
    */
   async function runs(settings) {
+    
     const params = Object.assign({headers: {'Content-Type': 'application/json'}}, autocanonConfig);
     Object.assign(params, settings);
     const res = await autocannon(params)
@@ -56,83 +63,95 @@ async function go(config, autocanonConfig) {
   //--------- IF CHANGED ALSO CHANGE ITS NAME IN THE HEADERS -------//
 
   //-------------- Hello World ---------//
-  const hwServer = await launchHelloWorld.go();
-  await runs({
-    title: 'helloWorld',
-    url: 'http://localhost:8080/'
-  });
-  await hwServer.kill();
+  if (todos.includes(R.HELLO)) {
+    const hwServer = await launchHelloWorld.go();
+    await runs({
+      title: 'helloWorld',
+      url: 'http://localhost:8080/'
+    });
+    await hwServer.kill();
+  }
 
   //-------------- Hello Mongo ---------//
-  const hmServer = await launchHelloMongo.go();
-  await runs({
-    title: 'mongoGet20',
-    url: 'http://localhost:8080/'
-  });
-  await runs({
-    title: 'mongoCreate1',
-    url: 'http://localhost:8080/',
-    body: JSON.stringify({"streamIds":["weight"],"type":"mass/kg","content":90})
-  });
-  await hmServer.kill();
+  if (todos.includes(R.MONGO)) {
+    const hmServer = await launchHelloMongo.go();
+    await runs({
+      title: 'mongoGet20',
+      url: 'http://localhost:8080/'
+    });
+    await runs({
+      title: 'mongoCreate1',
+      url: 'http://localhost:8080/',
+      body: JSON.stringify({"streamIds":["weight"],"type":"mass/kg","content":90})
+    });
+    await hmServer.kill();
+  }
 
   //-------------- Service Core ---------//
-  await resetUser();
-  await runs({
-    title: 'events.create',
-    url: apiEndpoint + 'events',
-    method: 'POST',
-    body: JSON.stringify({ type: 'note/txt', streamId: stream.id, content: 'Hello World' }),
-    //requests: [{setupRequest: path.resolve(__dirname, './lib/setup-request/to-console.js'), onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
-  });
+  if (todos.includes(R.EVENTS)) {
+    await resetUser();
+    await runs({
+      title: 'events.create',
+      url: apiEndpoint + 'events',
+      method: 'POST',
+      body: JSON.stringify({ type: 'note/txt', streamId: stream.id, content: 'Hello World' }),
+      //requests: [{setupRequest: path.resolve(__dirname, './lib/setup-request/to-console.js'), onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
+    });
 
-  await runs({
-    title: 'events.get',
-    url: apiEndpoint + 'events?limit=100',
-    //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
-  });
-
-  await resetUser();
-  await runs({
-    title: 'streams.create',
-    url: apiEndpoint + 'streams',
-    method: 'POST',
-    body: JSON.stringify({ name: '[<id>]' }),
-    idReplacement: true,
-    //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
-  });
-
-  await resetUser();
-  const batchStreams = [];
-  let parentId = null;
-  for (let i = 0; i < 10; i++) {
-    const id = i + 'aaaa[<id>]';
-    batchStreams.push({method: 'streams.create', params: {id: id, name: id, parentId : parentId}});
-    parentId = id;
+    await runs({
+      title: 'events.get',
+      url: apiEndpoint + 'events?limit=100',
+      //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
+    });
   }
-  await runs({
-    title: 'batch streams.create',
-    url: apiEndpoint,
-    method: 'POST',
-    body: JSON.stringify(batchStreams),
-    requests: [{
-      setupRequest: path.resolve(__dirname, './lib/setup-request/batch-streams.create.js'), 
-      //onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')
-    }],
-  });
 
-  await resetUser();
-  const batchEvents = [];
-  for (let i = 0; i < 10; i++) {
-    batchEvents.push({method: 'events.create', params: { type: 'note/txt', streamId: stream.id, content: 'Hello World' }});
+  if (todos.includes(R.STREAMS)) {
+    await resetUser();
+    await runs({
+      title: 'streams.create',
+      url: apiEndpoint + 'streams',
+      method: 'POST',
+      body: JSON.stringify({ name: '[<id>]' }),
+      idReplacement: true,
+      //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
+    });
   }
-  await runs({
-    title: 'batch events.create',
-    url: apiEndpoint ,
-    method: 'POST',
-    body: JSON.stringify(batchEvents),
-    //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
-  });
+
+  if (todos.includes(R.BATCH_STREAMS)) {
+    await resetUser();
+    const batchStreams = [];
+    let parentId = null;
+    for (let i = 0; i < 10; i++) {
+      const id = i + 'aaaa[<id>]';
+      batchStreams.push({method: 'streams.create', params: {id: id, name: id, parentId : parentId}});
+      parentId = id;
+    }
+    await runs({
+      title: 'batch streams.create',
+      url: apiEndpoint,
+      method: 'POST',
+      body: JSON.stringify(batchStreams),
+      requests: [{
+        setupRequest: path.resolve(__dirname, './lib/setup-request/batch-streams.create.js'), 
+        //onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')
+      }],
+    });
+  }
+
+  if (todos.includes(R.BATCH_EVENTS)) {
+    await resetUser();
+    const batchEvents = [];
+    for (let i = 0; i < 10; i++) {
+      batchEvents.push({method: 'events.create', params: { type: 'note/txt', streamId: stream.id, content: 'Hello World' }});
+    }
+    await runs({
+      title: 'batch events.create',
+      url: apiEndpoint ,
+      method: 'POST',
+      body: JSON.stringify(batchEvents),
+      //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
+    });
+  }
 
   await server.kill();
   return { abstract: abstract, results: results};
@@ -147,13 +166,17 @@ async function go(config, autocanonConfig) {
     workers: 4
   }
   
-  const defaults = { trace: { enable: false }};
+  const defaults = { 
+    do: [R.MONGO, R.HELLO, R.EVENTS, R.STREAMS, R.BATCH_EVENTS, R.BATCH_STREAMS],
+    trace: { enable: false }
+  };
 
   const configs = {
     //'audit-storage-only': {audit: {storage: {active: false}}}, 
     //'audit-syslog-only': {audit: {syslog: {active: false}}},
     //'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
     'light': {
+      //do: [R.MONGO, R.HELLO],
       backwardCombackwardCompatibility: {
         systemStreams: {prefix: {isActive: false}},
         tags: {isActive: false} 
@@ -163,16 +186,21 @@ async function go(config, autocanonConfig) {
       caching: {isActive: true, localStreams: true, accesses: true}
     },
     'fat': {
+      skip: true,
       audit: {syslog: {active: true}, storage: {active: true}},
       integrity: { isActive: true},
       caching: {isActive: false, localStreams: false, accesses: false}
     },
-    'basic': {}
+    'basic': {
+      skip: true
+    }
   };
   
 
   for (let name of Object.keys(configs)) {  
-    const config = Object.assign(configs[name], defaults);
+    const config = Object.assign(Object.assign({}, defaults), configs[name]);
+    if (config.skip) continue;
+    delete config.skip;
     const res = await go(config, autocanonConfig);  
 
     await resultTools.save(TEST_SUITE_NAME, name , res);
