@@ -143,7 +143,7 @@ async function go(config, autocanonConfig) {
   const autocanonConfig = {
     connections: 10, 
     pipelining: 1, 
-    duration: 1, 
+    duration: 10, 
     workers: 4
   }
   
