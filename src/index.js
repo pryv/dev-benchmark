@@ -176,10 +176,10 @@ async function go(config, autocanonConfig) {
 
 (async () => {
   const autocanonConfig = {
-    connections: 10, 
-    pipelining: 1, 
-    duration: 10, 
-    workers: 4
+    connections: 10, //  10
+    pipelining: 1,  // 1
+    duration: 10,  // 10
+    workers: 4 // 4
   }
   
   const defaults = { 
@@ -187,28 +187,21 @@ async function go(config, autocanonConfig) {
     trace: { enable: true }
   };
 
+  const light = {
+    backwardCombackwardCompatibility: {
+      systemStreams: {prefix: {isActive: false}},
+      tags: {isActive: false} 
+    },
+    audit: {syslog: {active: false}, storage: {active: false}},
+    integrity: { isActive: false},
+    caching: {isActive: true},
+    accessTracking: {isActive: false}
+  }
+
   const configs = {
-    //'audit-storage-only': {audit: {storage: {active: false}}}, 
-    //'audit-syslog-only': {audit: {syslog: {active: false}}},
-    //'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
-    'light': {
-      backwardCombackwardCompatibility: {
-        systemStreams: {prefix: {isActive: false}},
-        tags: {isActive: false} 
-      },
-      audit: {syslog: {active: false}, storage: {active: false}},
-      integrity: { isActive: false},
-      caching: {isActive: true}
-    },
-    'light-no-cache': {
-      backwardCombackwardCompatibility: {
-        systemStreams: {prefix: {isActive: false}},
-        tags: {isActive: false} 
-      },
-      audit: {syslog: {active: false}, storage: {active: false}},
-      integrity: { isActive: false},
-      caching: {isActive: false}
-    },
+    'light': light,
+    'light-access-tracking': Object.assign(Object.assign({}, light), {accessTracking: {isActive: true}}),
+    'light-no-cache': Object.assign(Object.assign({}, light), {caching: {isActive: false}}),
     'fat': {
       skip: false,
       audit: {syslog: {active: true}, storage: {active: true}},
