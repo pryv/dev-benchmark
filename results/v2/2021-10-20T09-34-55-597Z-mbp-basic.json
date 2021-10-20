@@ -1,0 +1,58 @@
+{
+  "version": "1.7.0-rc29-25-g402aa54c",
+  "config": {
+    "trace": {
+      "enable": true,
+      "tags": {
+        "benchmark": "basic"
+      }
+    }
+  },
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 26752.73,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet20",
+      "rate": 2029.4,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 1916.5,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 227.2,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 108.9,
+      "errors": 0
+    },
+    {
+      "title": "streams.get",
+      "rate": 349.9,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 254.6,
+      "errors": 0
+    },
+    {
+      "title": "batch streams.create",
+      "rate": 9.81,
+      "errors": 0
+    },
+    {
+      "title": "batch events.create",
+      "rate": 26.3,
+      "errors": 0
+    }
+  ]
+}

@@ -16,7 +16,7 @@ const TEST_SUITE_NAME = 'v2';
 const PAUSE_BETWEEN_RUNS = 2 ; // in seconds
 
 // keys for runs 
-const R = { MONGO: 'mongo', HELLO: 'hello', EVENTS: 'events', STREAMS: 'streams', BATCH_EVENTS: 'b_events', BATCH_STREAMS: 'b_streams'};
+const R = { MONGO: 'mongo', HELLO: 'hello', EVENTS: 'events', STREAMS: 'streams', STREAMS_CREATE: 'streams_c', BATCH_EVENTS_CREATE: 'b_events', BATCH_STREAMS_CREATE: 'b_streams'};
 
 // async/await
 async function go(config, autocanonConfig) {
@@ -107,6 +107,23 @@ async function go(config, autocanonConfig) {
 
   if (todos.includes(R.STREAMS)) {
     await resetUser();
+    // create a tree of 50 streams
+    let parentId = null;
+    for (let i = 0; i < 50; i++) {
+      const id = i + 'aaaa';
+      await streams.create(apiEndpoint, {id: id, name: id, parentId : parentId});
+      parentId = id;
+    }
+
+    await runs({
+      title: 'streams.get',
+      url: apiEndpoint + 'streams',
+      //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
+    });
+  }
+
+  if (todos.includes(R.STREAMS_CREATE)) {
+    await resetUser();
     await runs({
       title: 'streams.create',
       url: apiEndpoint + 'streams',
@@ -117,7 +134,7 @@ async function go(config, autocanonConfig) {
     });
   }
 
-  if (todos.includes(R.BATCH_STREAMS)) {
+  if (todos.includes(R.BATCH_STREAMS_CREATE)) {
     await resetUser();
     const batchStreams = [];
     let parentId = null;
@@ -138,7 +155,7 @@ async function go(config, autocanonConfig) {
     });
   }
 
-  if (todos.includes(R.BATCH_EVENTS)) {
+  if (todos.includes(R.BATCH_EVENTS_CREATE)) {
     await resetUser();
     const batchEvents = [];
     for (let i = 0; i < 10; i++) {
@@ -152,8 +169,7 @@ async function go(config, autocanonConfig) {
       //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
     });
   }
-
-  await server.kill();
+  if (typeof server != 'undefined')  await server.kill();
   return { abstract: abstract, results: results};
 }
 
@@ -167,8 +183,8 @@ async function go(config, autocanonConfig) {
   }
   
   const defaults = { 
-    do: [R.MONGO, R.HELLO, R.EVENTS, R.STREAMS, R.BATCH_EVENTS, R.BATCH_STREAMS],
-    trace: { enable: false }
+    do: [R.MONGO, R.HELLO, R.EVENTS,  R.STREAMS, R.STREAMS_CREATE, R.BATCH_EVENTS_CREATE, R.BATCH_STREAMS_CREATE],
+    trace: { enable: true }
   };
 
   const configs = {
@@ -176,23 +192,31 @@ async function go(config, autocanonConfig) {
     //'audit-syslog-only': {audit: {syslog: {active: false}}},
     //'audit-none': {audit: {syslog: {active: false}, storage: {active: false}}},
     'light': {
-      //do: [R.MONGO, R.HELLO],
       backwardCombackwardCompatibility: {
         systemStreams: {prefix: {isActive: false}},
         tags: {isActive: false} 
       },
       audit: {syslog: {active: false}, storage: {active: false}},
       integrity: { isActive: false},
-      caching: {isActive: true, localStreams: true, accesses: true}
+      caching: {isActive: true}
+    },
+    'light-no-cache': {
+      backwardCombackwardCompatibility: {
+        systemStreams: {prefix: {isActive: false}},
+        tags: {isActive: false} 
+      },
+      audit: {syslog: {active: false}, storage: {active: false}},
+      integrity: { isActive: false},
+      caching: {isActive: false}
     },
     'fat': {
-      skip: true,
+      skip: false,
       audit: {syslog: {active: true}, storage: {active: true}},
       integrity: { isActive: true},
-      caching: {isActive: false, localStreams: false, accesses: false}
+      caching: {isActive: false}
     },
     'basic': {
-      skip: true
+      skip: false
     }
   };
   
@@ -201,6 +225,9 @@ async function go(config, autocanonConfig) {
     const config = Object.assign(Object.assign({}, defaults), configs[name]);
     if (config.skip) continue;
     delete config.skip;
+
+    if (config.trace?.enable) config.trace.tags = { benchmark: name};
+
     const res = await go(config, autocanonConfig);  
 
     await resultTools.save(TEST_SUITE_NAME, name , res);

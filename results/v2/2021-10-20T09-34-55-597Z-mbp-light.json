@@ -1,0 +1,82 @@
+{
+  "version": "1.7.0-rc29-25-g402aa54c",
+  "config": {
+    "trace": {
+      "enable": true,
+      "tags": {
+        "benchmark": "light"
+      }
+    },
+    "backwardCombackwardCompatibility": {
+      "systemStreams": {
+        "prefix": {
+          "isActive": false
+        }
+      },
+      "tags": {
+        "isActive": false
+      }
+    },
+    "audit": {
+      "syslog": {
+        "active": false
+      },
+      "storage": {
+        "active": false
+      }
+    },
+    "integrity": {
+      "isActive": false
+    },
+    "caching": {
+      "isActive": true
+    }
+  },
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 26972.8,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet20",
+      "rate": 2038.6,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 1938.6,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 234,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 110,
+      "errors": 0
+    },
+    {
+      "title": "streams.get",
+      "rate": 356.4,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 256.7,
+      "errors": 0
+    },
+    {
+      "title": "batch streams.create",
+      "rate": 9.81,
+      "errors": 0
+    },
+    {
+      "title": "batch events.create",
+      "rate": 27.2,
+      "errors": 0
+    }
+  ]
+}
