@@ -1,0 +1,85 @@
+{
+  "version": "1.7.0-rc29-30-gdc673731",
+  "config": {
+    "trace": {
+      "enable": true,
+      "tags": {
+        "benchmark": "light"
+      }
+    },
+    "backwardCombackwardCompatibility": {
+      "systemStreams": {
+        "prefix": {
+          "isActive": false
+        }
+      },
+      "tags": {
+        "isActive": false
+      }
+    },
+    "audit": {
+      "syslog": {
+        "active": false
+      },
+      "storage": {
+        "active": false
+      }
+    },
+    "integrity": {
+      "isActive": false
+    },
+    "caching": {
+      "isActive": true
+    },
+    "accessTracking": {
+      "isActive": false
+    }
+  },
+  "runs": [
+    {
+      "title": "helloWorld",
+      "rate": 27068.8,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet20",
+      "rate": 1986.3,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 1910.2,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 234.1,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 104,
+      "errors": 0
+    },
+    {
+      "title": "streams.get",
+      "rate": 390.8,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 99.9,
+      "errors": 0
+    },
+    {
+      "title": "batch streams.create",
+      "rate": 10.5,
+      "errors": 0
+    },
+    {
+      "title": "batch events.create",
+      "rate": 31.1,
+      "errors": 0
+    }
+  ]
+}

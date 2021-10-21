@@ -12,7 +12,7 @@ const path = require('path');
 const autocannon = require('autocannon');
 const Pryv = require('pryv');
 
-const TEST_SUITE_NAME = 'v2';
+const TEST_SUITE_NAME = 'v3';
 const PAUSE_BETWEEN_RUNS = 2 ; // in seconds
 
 // keys for runs 
@@ -128,9 +128,12 @@ async function go(config, autocanonConfig) {
       title: 'streams.create',
       url: apiEndpoint + 'streams',
       method: 'POST',
-      body: JSON.stringify({ name: '[<id>]' }),
+      body: JSON.stringify({ id: '[<id>]', name: 'aaaa[<id>]', parentId: '[<parentId>]' }),
       idReplacement: true,
-      //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
+      requests: [{
+        onResponse: path.resolve(__dirname, './lib/on-response/streams.create-response.js'),
+        setupRequest: path.resolve(__dirname, './lib/setup-request/streams.create.js')
+      }]
     });
   }
 
@@ -201,7 +204,7 @@ async function go(config, autocanonConfig) {
   const configs = {
     'light': light,
     'light-access-tracking': Object.assign(Object.assign({}, light), {accessTracking: {isActive: true}}),
-    'light-no-cache': Object.assign(Object.assign({}, light), {caching: {isActive: false}}),
+    'light-no-cache': Object.assign(Object.assign({}, light), {skip: false, caching: {isActive: false}}),
     'fat': {
       skip: false,
       audit: {syslog: {active: true}, storage: {active: true}},
