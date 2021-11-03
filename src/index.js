@@ -66,8 +66,12 @@ async function go(config, autocanonConfig) {
   if (todos.includes(R.HELLO)) {
     const hwServer = await launchHelloWorld.go();
     await runs({
-      title: 'helloWorld',
+      title: 'helloWorld-10',
       url: 'http://localhost:8080/'
+    });
+    await runs({
+      title: 'helloWorld-10-Streamed',
+      url: 'http://localhost:8080/streamed'
     });
     await hwServer.kill();
   }
@@ -76,8 +80,12 @@ async function go(config, autocanonConfig) {
   if (todos.includes(R.MONGO)) {
     const hmServer = await launchHelloMongo.go();
     await runs({
-      title: 'mongoGet20',
+      title: 'mongoGet10',
       url: 'http://localhost:8080/'
+    });
+    await runs({
+      title: 'mongoGet10Streamed',
+      url: 'http://localhost:8080/streamed'
     });
     await runs({
       title: 'mongoCreate1',
@@ -101,6 +109,14 @@ async function go(config, autocanonConfig) {
     await runs({
       title: 'events.get',
       url: apiEndpoint + 'events?limit=100',
+      //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
+    });
+
+    await runs({
+      title: 'batch events.get',
+      url: apiEndpoint ,
+      method: 'POST',
+      body: JSON.stringify([{method: 'events.get', params: {limit: 100}}]),
       //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
     });
   }
@@ -158,6 +174,9 @@ async function go(config, autocanonConfig) {
     });
   }
 
+
+    
+
   if (todos.includes(R.BATCH_EVENTS_CREATE)) {
     await resetUser();
     const batchEvents = [];
@@ -187,10 +206,12 @@ async function go(config, autocanonConfig) {
   
   const defaults = { 
     do: [R.MONGO, R.HELLO, R.EVENTS,  R.STREAMS, R.STREAMS_CREATE, R.BATCH_EVENTS_CREATE, R.BATCH_STREAMS_CREATE],
-    trace: { enable: true }
+    trace: { enable: true },
+    skip: true
   };
 
   const light = {
+    do: [R.HELLO],
     backwardCombackwardCompatibility: {
       systemStreams: {prefix: {isActive: false}},
       tags: {isActive: false} 
@@ -203,16 +224,14 @@ async function go(config, autocanonConfig) {
 
   const configs = {
     'light': light,
-    'light-access-tracking': Object.assign(Object.assign({}, light), {accessTracking: {isActive: true}}),
-    'light-no-cache': Object.assign(Object.assign({}, light), {skip: false, caching: {isActive: false}}),
+    'light-access-tracking': Object.assign(Object.assign({}, light), {skip: false, accessTracking: {isActive: true}}),
+    'light-no-cache': Object.assign(Object.assign({}, light), {caching: {isActive: false}}),
     'fat': {
-      skip: false,
       audit: {syslog: {active: true}, storage: {active: true}},
       integrity: { isActive: true},
       caching: {isActive: false}
     },
     'basic': {
-      skip: false
     }
   };
   
