@@ -24,14 +24,15 @@ http.createServer(function (req, res) {
 console.log('Ready');
 
 function streamData(res) {
-  async function* iterate() {
-    let r = null;
-    for (let i = 0 ; i < 10; i++) {
-      yield 'Hello World!';
-    }
+  
+  const readable = new Readable()
+
+  readable.pipe(res)
+
+  for (let i = 0 ; i < 10; i++) {
+    readable.push('Hello World!');
   }
+  // no more data
+  readable.push(null)
 
-  const stream = Readable.from(iterate(), {objectMode: true, highWaterMark: 4000});
-
-  stream.pipe(res);
 }
