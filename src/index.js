@@ -23,6 +23,7 @@ async function go(config, autocanonConfig) {
   const todos = config.do;
   delete config.do;
 
+  // launch API Server
   const server = await launchApiServer.withConfig(config, false);
   await globals.init();
 
@@ -80,13 +81,18 @@ async function go(config, autocanonConfig) {
   if (todos.includes(R.MONGO)) {
     const hmServer = await launchHelloMongo.go();
     await runs({
-      title: 'mongoGet10',
+      title: 'mongoGet',
       url: 'http://localhost:8080/'
     });
     await runs({
-      title: 'mongoGet10Streamed',
-      url: 'http://localhost:8080/streamed'
+      title: 'mongoGet-Streamed-Test',
+      url: 'http://localhost:8080/streamed-write'
     });
+    await runs({
+      title: 'mongoGet-Streamed-Pipe',
+      url: 'http://localhost:8080/streamed-pipe'
+    });
+  
     await runs({
       title: 'mongoCreate1',
       url: 'http://localhost:8080/',
@@ -211,7 +217,7 @@ async function go(config, autocanonConfig) {
   };
 
   const light = {
-    do: [R.HELLO],
+    do: [R.MONGO],
     backwardCombackwardCompatibility: {
       systemStreams: {prefix: {isActive: false}},
       tags: {isActive: false} 

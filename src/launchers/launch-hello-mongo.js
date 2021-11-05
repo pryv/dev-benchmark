@@ -4,9 +4,9 @@ const Launcher = require('./Launcher');
 
 PATH_HW = './';
 
-async function go() {
+async function go(speak) {
   const cwd = path.resolve(__dirname, PATH_HW);
-  const s = new Launcher(cwd, 'node', ['./hello-mongo-server.js'], 'Ready');
+  const s = new Launcher(cwd, 'node', ['./hello-mongo-server.js'], 'Ready', speak);
   await s.ready();
   console.log('Hello Mongo Started');
   return s;
