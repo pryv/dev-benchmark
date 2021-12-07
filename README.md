@@ -1,4 +1,6 @@
-# app-node-benchmark
+# dev-tool-benchmark
+
+Benchmarking utility (draft) 
 
 ### setup & run 
 
