@@ -1,4 +1,4 @@
-# dev-tool-benchmark
+# dev-benchmark
 
 Benchmarking utility (draft) 
 
