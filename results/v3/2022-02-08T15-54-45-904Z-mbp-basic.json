@@ -1,0 +1,78 @@
+{
+  "version": "1.7.12-98-g49757974",
+  "config": {
+    "trace": {
+      "enable": true,
+      "tags": {
+        "benchmark": "basic"
+      }
+    }
+  },
+  "runs": [
+    {
+      "title": "helloWorld-10",
+      "rate": 3516.2,
+      "errors": 0
+    },
+    {
+      "title": "helloWorld-10-Streamed",
+      "rate": 243.3,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet",
+      "rate": 1178,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet-Streamed-Test",
+      "rate": 1074.91,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet-Streamed-Pipe",
+      "rate": 178.9,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 1146,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 202.8,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 136.4,
+      "errors": 0
+    },
+    {
+      "title": "batch events.get",
+      "rate": 136.9,
+      "errors": 0
+    },
+    {
+      "title": "streams.get",
+      "rate": 330.4,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 96.7,
+      "errors": 0
+    },
+    {
+      "title": "batch streams.create",
+      "rate": 10.4,
+      "errors": 0
+    },
+    {
+      "title": "batch events.create",
+      "rate": 28.8,
+      "errors": 0
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "version": "1.7.12-98-g49757974",
+  "config": {
+    "trace": {
+      "enable": true,
+      "tags": {
+        "benchmark": "light"
+      }
+    },
+    "backwardCombackwardCompatibility": {
+      "systemStreams": {
+        "prefix": {
+          "isActive": false
+        }
+      },
+      "tags": {
+        "isActive": false
+      }
+    },
+    "audit": {
+      "syslog": {
+        "active": false
+      },
+      "storage": {
+        "active": false
+      }
+    },
+    "integrity": {
+      "isActive": false
+    },
+    "caching": {
+      "isActive": true
+    },
+    "accessTracking": {
+      "isActive": false
+    }
+  },
+  "runs": [
+    {
+      "title": "helloWorld-10",
+      "rate": 3492.6,
+      "errors": 0
+    },
+    {
+      "title": "helloWorld-10-Streamed",
+      "rate": 242.3,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet",
+      "rate": 1152.6,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet-Streamed-Test",
+      "rate": 1069.3,
+      "errors": 0
+    },
+    {
+      "title": "mongoGet-Streamed-Pipe",
+      "rate": 179,
+      "errors": 0
+    },
+    {
+      "title": "mongoCreate1",
+      "rate": 1153,
+      "errors": 0
+    },
+    {
+      "title": "events.create",
+      "rate": 237.2,
+      "errors": 0
+    },
+    {
+      "title": "events.get",
+      "rate": 139.1,
+      "errors": 0
+    },
+    {
+      "title": "batch events.get",
+      "rate": 159.31,
+      "errors": 0
+    },
+    {
+      "title": "streams.get",
+      "rate": 395.8,
+      "errors": 0
+    },
+    {
+      "title": "streams.create",
+      "rate": 99,
+      "errors": 0
+    },
+    {
+      "title": "batch streams.create",
+      "rate": 10.4,
+      "errors": 0
+    },
+    {
+      "title": "batch events.create",
+      "rate": 32.3,
+      "errors": 0
+    }
+  ]
+}

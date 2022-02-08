@@ -14,7 +14,7 @@ const COUNT = 100;
 let db;
 let collection;
 
-// (best from 400 / crash over 300K) 1575 / sec (10 elements) -- 975 (100 el) -- 208 (1000 el) -- 21.9 (10000 el) -- 2.14 (100000 el)
+// (best from 400 / crash over 300K) 1575 / sec (10 elements) -- 975 (100 el) -- 208 (10000 el) -- 21.9 (10000 el) -- 2.14 (100000 el)
 app.get('/', (req, res) => {
   collection.find({}).limit(COUNT).toArray((err, dbRes) => {
     res.send(dbRes)
@@ -32,7 +32,7 @@ app.get('/streamed-pipe', (req, res) => {
   stream.pipe(new ResultStream()).pipe(res);
 })
 
-// (best up to 400) 2123 / sec (10 elements) -- 993.67 (100 el) -- 164 (100 el) -- 16 (10000 elements) -- 1.6 (100000 el)
+// (best up to 400) 2123 / sec (10 elements) -- 993.67 (100 el) -- 164 (1000 el) -- 16 (10000 elements) -- 1.6 (100000 el)
 app.get('/streamed-write', (req, res) => {
   const cursor = collection.find({}).limit(COUNT);
   const stream = Readable.from(cursor, {objectMode: true, highWaterMark: 4000});

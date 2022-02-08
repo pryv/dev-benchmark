@@ -45,21 +45,21 @@ async function go(config, autocanonConfig) {
    * @param {*} settings 
    */
   async function runs(settings) {
-    
     const params = Object.assign({headers: {'Content-Type': 'application/json'}}, autocanonConfig);
     Object.assign(params, settings);
     const res = await autocannon(params)
     results.runs.push(res);
-    abstract.runs.push({
+    const abstractRun = {
       title: settings.title,
       rate: res.requests.average,
       errors: res.errors
-    })
+    };
+    abstract.runs.push(abstractRun)
+    console.log(abstractRun);
 
     // let existing call end
     await new Promise(r => setTimeout(r, PAUSE_BETWEEN_RUNS * 1000));
   }
-
   //--------- HERE COMES THE TEST - SUITE -----------//
   //--------- IF CHANGED ALSO CHANGE ITS NAME IN THE HEADERS -------//
 
@@ -213,11 +213,10 @@ async function go(config, autocanonConfig) {
   const defaults = { 
     do: [R.MONGO, R.HELLO, R.EVENTS,  R.STREAMS, R.STREAMS_CREATE, R.BATCH_EVENTS_CREATE, R.BATCH_STREAMS_CREATE],
     trace: { enable: true },
-    skip: true
+    skip: false
   };
 
   const light = {
-    do: [R.MONGO],
     backwardCombackwardCompatibility: {
       systemStreams: {prefix: {isActive: false}},
       tags: {isActive: false} 
@@ -242,8 +241,9 @@ async function go(config, autocanonConfig) {
   };
   
 
-  for (let name of Object.keys(configs)) {  
-    const config = Object.assign(Object.assign({}, defaults), configs[name]);
+  for (let name of Object.keys(configs)) {
+    
+    const config = Object.assign(Object.assign({}, defaults), configs[name]); 
     if (config.skip) continue;
     delete config.skip;
 
