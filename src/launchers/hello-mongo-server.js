@@ -100,7 +100,7 @@ class ResultStream extends Transform {
   
   constructor(bufferSize) {
     super({objectMode: true, highWaterMark: 4000});
-    this.bufferSize = bufferSize || 2048 ;
+    this.bufferSize = bufferSize || 2048 ;
     this.isStart = true;
     this.buffer = '';
   }
