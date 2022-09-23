@@ -33,7 +33,7 @@ async function go(config, autocanonConfig) {
     user = await users.create();
     access = await accesses.create(user.apiEndpoint);
     // eventually reconstruct apiEnpoint (for older API Versionss)
-    apiEndpoint = access.apiEndpoint || await pryv.service.apiEndpointFor(user.username, access.token);
+    apiEndpoint = access.apiEndpoint || await pryv.service.apiEndpointFor(user.username, access.token);
     stream = await streams.create(apiEndpoint);
   }
  
@@ -213,7 +213,6 @@ async function go(config, autocanonConfig) {
   const defaults = { 
     do: [R.MONGO, R.HELLO, R.EVENTS,  R.STREAMS, R.STREAMS_CREATE, R.BATCH_EVENTS_CREATE, R.BATCH_STREAMS_CREATE],
     trace: { enable: true },
-    skip: false
   };
 
   const light = {
@@ -228,8 +227,8 @@ async function go(config, autocanonConfig) {
   }
 
   const configs = {
-    'light': light,
-    'light-access-tracking': Object.assign(Object.assign({}, light), {skip: false, accessTracking: {isActive: true}}),
+    'light': Object.assign(Object.assign({}, light), {skip: false}),
+    'light-access-tracking': Object.assign(Object.assign({}, light), {skip: true, accessTracking: {isActive: true}}),
     'light-no-cache': Object.assign(Object.assign({}, light), {caching: {isActive: false}}),
     'fat': {
       audit: {syslog: {active: true}, storage: {active: true}},
@@ -238,6 +237,7 @@ async function go(config, autocanonConfig) {
     },
     'basic': {
     }
+    
   };
   
 
