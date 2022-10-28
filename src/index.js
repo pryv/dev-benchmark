@@ -92,6 +92,10 @@ async function go(config, autocanonConfig) {
       title: 'mongoGet-Streamed-Pipe',
       url: 'http://localhost:8080/streamed-pipe'
     });
+    await runs({
+      title: 'mongoGet-Streamed-Pressured',
+      url: 'http://localhost:8080/streamed-pressured'
+    });
   
     await runs({
       title: 'mongoCreate1',
@@ -112,9 +116,10 @@ async function go(config, autocanonConfig) {
       //requests: [{setupRequest: path.resolve(__dirname, './lib/setup-request/to-console.js'), onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
     });
 
+    const nEvents = 100;
     await runs({
-      title: 'events.get',
-      url: apiEndpoint + 'events?limit=100',
+      title: 'events.get (' + nEvents +' events)',
+      url: apiEndpoint + 'events?limit=' + nEvents,
       //requests: [{onResponse: path.resolve(__dirname, './lib/on-response/to-console.js')}],
     });
 
@@ -206,7 +211,7 @@ async function go(config, autocanonConfig) {
   const autocanonConfig = {
     connections: 10, //  10
     pipelining: 1,  // 1
-    duration: 10,  // 10
+    duration: 2,  // 10
     workers: 4 // 4
   }
   
@@ -214,6 +219,16 @@ async function go(config, autocanonConfig) {
     do: [R.MONGO, R.HELLO, R.EVENTS,  R.STREAMS, R.STREAMS_CREATE, R.BATCH_EVENTS_CREATE, R.BATCH_STREAMS_CREATE],
     trace: { enable: true },
   };
+
+  const mongoOnly = {
+    do: [R.MONGO],
+    trace: { enable: false },
+  }
+
+  const eventsOnly = {
+    do: [R.EVENTS],
+    trace: { enable: false },
+  }
 
   const light = {
     backwardCombackwardCompatibility: {
@@ -241,9 +256,11 @@ async function go(config, autocanonConfig) {
   };
   
 
+  const playList = eventsOnly; // choose one of defaults, mongoOnly, eventsOnly
+
   for (let name of Object.keys(configs)) {
     
-    const config = Object.assign(Object.assign({}, defaults), configs[name]); 
+    const config = Object.assign(Object.assign({}, playList), configs[name]); 
     if (config.skip) continue;
     delete config.skip;
 

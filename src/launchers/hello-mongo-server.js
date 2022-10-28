@@ -54,7 +54,31 @@ app.get('/streamed-write', (req, res) => {
   resultStream.on('end', () => {
     res.end();
   });
-})
+});
+
+
+app.get('/streamed-pressured', (req, res) => { 
+  const cursor = collection.find({}).limit(COUNT);
+  // streaming with backpressure - highWaterMark has really some effect "4000" seems to be an optimnal value
+  const readableUnderPressure = Readable.from(cursor, {objectMode: true, highWaterMark: 4000});
+  let performingReadRequest = false;
+  readableUnderPressure._read = async () => {
+    if (performingReadRequest) return; // avoid strating a 2nd read request when already pushing.
+    performingReadRequest = true;
+    try {
+      let push = true;
+      while (push) {
+        if (! await cursor.hasNext()) { readableUnderPressure.push(null); break; } // stop
+        const value = await cursor.next();
+        push = readableUnderPressure.push(value); // if null reader is "full" (handle back pressure)
+      }
+      performingReadRequest = false;
+    } catch (err) {
+      readableUnderPressure.emit('error', err);
+    }
+  };
+  readableUnderPressure.pipe(new ResultStream()).pipe(res);
+});
 
 
 app.post('/', async (req, res) => {
