@@ -85,7 +85,7 @@ async function go(config, autocanonConfig) {
       url: 'http://localhost:8080/'
     });
     await runs({
-      title: 'mongoGet-Streamed-Test',
+      title: 'mongoGet-Streamed-Write',
       url: 'http://localhost:8080/streamed-write'
     });
     await runs({
