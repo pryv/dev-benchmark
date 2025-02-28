@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright (C) Pryv https://pryv.com
+ * This file is part of Pryv.io and released under BSD-Clause-3 License
+ * Refer to LICENSE file
+ */
 const {MongoClient} = require('mongodb');
 const config = require('../config.json');
 
@@ -29,7 +35,7 @@ async function insertStreams(user, count) {
         "userId" : user
       });
   }
-  try { 
+  try {
     console.time("insert");
     const res = await db.collection("streams").insertMany(streams);   
     console.log("Insert: ",res.insertedCount );

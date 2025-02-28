@@ -1,4 +1,10 @@
 /**
+ * @license
+ * Copyright (C) Pryv https://pryv.com
+ * This file is part of Pryv.io and released under BSD-Clause-3 License
+ * Refer to LICENSE file
+ */
+/**
  * Utils to name, save and show results
  */
 const os = require('os');

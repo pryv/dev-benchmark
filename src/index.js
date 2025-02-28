@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright (C) Pryv https://pryv.com
+ * This file is part of Pryv.io and released under BSD-Clause-3 License
+ * Refer to LICENSE file
+ */
 const launchApiServer = require('./launchers/launch-api-server');
 const launchHelloWorld = require('./launchers/launch-hello-world');
 const launchHelloMongo = require('./launchers/launch-hello-mongo');

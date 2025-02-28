@@ -12,3 +12,8 @@ Benchmarking utility (draft)
 ### 
 
 Results will be stored in 
+
+
+## License
+
+[BSD-3-Clause](LICENSE)

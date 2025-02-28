@@ -1,4 +1,10 @@
 /**
+ * @license
+ * Copyright (C) Pryv https://pryv.com
+ * This file is part of Pryv.io and released under BSD-Clause-3 License
+ * Refer to LICENSE file
+ */
+/**
  * Open sqlite connection and perform writes
  */
  const sqlite3 = require('better-sqlite3');
